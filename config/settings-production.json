@@ -1,8 +1,0 @@
-{
-  "port": 80,
-  "logging": {
-    "console": "error",
-    "file": "info",
-    "path": "/var/log/"
-  }
-}

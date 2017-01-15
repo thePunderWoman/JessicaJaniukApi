@@ -9,10 +9,12 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
+- npm install -g sequelize-cli
 - npm prune
 - npm update
+- db:migrate
 
-script: mocha
+script: npm test
 
 notifications:
   email:

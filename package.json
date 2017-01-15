@@ -5,23 +5,27 @@
   "main": "server.js",
   "env": "development",
   "scripts": {
-    "start": "gulp",
-    "test": "gulp test && gulp lint"
+    "start": "node src/app",
+    "test": "mocha 'src/**/*.spec.js' && eslint . --ext .js"
   },
   "author": "Jessica Janiuk",
   "dependencies": {
-    "async": "^2.1.4",
-    "bunyan": "^1.8.5",
     "db-migrate": "^0.10.0-beta.20",
-    "lodash": "^4.17.4",
-    "moment": "^2.17.1",
-    "nconf": "^0.8.4",
-    "orm": "^3.2.2",
+    "db-migrate-pg": "^0.1.11",
     "pg": "^6.1.2",
     "restify": "^4.3.0",
-    "slug": "^0.9.1"
+    "restify-plugins": "^1.5.1",
+    "restify-router": "^0.3.1",
+    "restify-validator": "^0.3.1",
+    "sequelize": "^3.29.0",
+    "sequelize-cli": "^2.5.1",
+    "sequelize-heroku": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "chai": "^3.5.0",
+    "eslint": "^3.13.1",
+    "eslint-config-google": "^0.7.1",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.7"
   }
 }
