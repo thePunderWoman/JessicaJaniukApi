@@ -1,0 +1,7 @@
+{
+	"env": "development",
+	"logging": {
+		"console": "debug",
+		"file": "debug"
+	}
+}

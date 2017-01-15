@@ -1,0 +1,46 @@
+{
+  "development": {
+    "driver": "pg",
+    "timezone": "utc",
+    "user": "apiuser",
+    "password": "Password1!",
+    "host": "localhost",
+    "database": "restify_starter",
+    "pool_size": 50,
+    "port": 5432,
+    "query": {
+      "pool": true
+    },
+    "debug_queries": true
+  },
+
+  "staging": {
+    "driver": "pg",
+    "timezone": "utc",
+    "user": "apiuser",
+    "password": "",
+    "host": "localhost",
+    "database": "restify-starter",
+    "pool_size": 50,
+    "port": 5432,
+    "query": {
+      "pool": true
+    },
+    "debug_queries": false
+  },
+
+  "production": {
+     "driver": "pg",
+    "timezone": "utc",
+    "user": "apiuser",
+    "password": "",
+    "host": "localhost",
+    "database": "restify-starter",
+    "pool_size": 50,
+    "port": 5432,
+    "query": {
+      "pool": true
+    },
+    "debug_queries": false
+  }
+}
