@@ -12,7 +12,7 @@ before_script:
 - npm install -g sequelize-cli
 - npm prune
 - npm update
-- db:migrate
+- sequelize db:migrate
 
 script: npm test
 
