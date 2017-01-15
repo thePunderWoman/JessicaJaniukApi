@@ -1,27 +1,27 @@
 {
-  "name": "restify-starter",
+  "name": "jessica-janiuk-api",
   "version": "0.0.1",
-  "description": "Starter template for restify.js APIs",
+  "description": "Jessica Janiuk's personal website API",
   "main": "server.js",
   "env": "development",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp",
+    "test": "gulp test && gulp lint"
   },
-  "author": "Todd Price",
-  "license": "MIT",
+  "author": "Jessica Janiuk",
   "dependencies": {
-    "async": "^0.9.0",
-    "bunyan": "^1.0.1",
-    "db-migrate": "^0.7.1",
-    "lodash": "^2.4.1",
-    "moment": "^2.8.3",
-    "nconf": "^0.6.9",
-    "orm": "^2.1.19",
-    "pg": "^3.4.4",
-    "restify": "^2.8.2",
-    "slug": "^0.8.0"
+    "async": "^2.1.4",
+    "bunyan": "^1.8.5",
+    "db-migrate": "^0.10.0-beta.20",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "nconf": "^0.8.4",
+    "orm": "^3.2.2",
+    "pg": "^6.1.2",
+    "restify": "^4.3.0",
+    "slug": "^0.9.1"
   },
   "devDependencies": {
-    "mocha": "^1.21.4"
+    "mocha": "^3.2.0"
   }
 }

@@ -5,7 +5,7 @@
     "user": "apiuser",
     "password": "Password1!",
     "host": "localhost",
-    "database": "restify_starter",
+    "database": "jessica_janiuk_api",
     "pool_size": 50,
     "port": 5432,
     "query": {
@@ -20,7 +20,7 @@
     "user": "apiuser",
     "password": "",
     "host": "localhost",
-    "database": "restify-starter",
+    "database": "jessica_janiuk_api",
     "pool_size": 50,
     "port": 5432,
     "query": {
@@ -30,12 +30,12 @@
   },
 
   "production": {
-     "driver": "pg",
+    "driver": "pg",
     "timezone": "utc",
     "user": "apiuser",
     "password": "",
     "host": "localhost",
-    "database": "restify-starter",
+    "database": "jessica_janiuk_api",
     "pool_size": 50,
     "port": 5432,
     "query": {

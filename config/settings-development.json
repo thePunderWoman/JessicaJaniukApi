@@ -3,6 +3,6 @@
   "logging": {
     "console": "error",
     "file": "info",
-    "path": "~/Logs/restify-starter/"
+    "path": "~/Logs/jessica-janiuk-api/"
   }
 }

@@ -12,7 +12,7 @@ exports.StartServer = function(env) {
 	//setup logging
 	var logPath = settings.logging.path;
 	var logDate = new moment().format('YYYY-MM-DD-HHmm');
-	var logFilespec = path.join(logPath, "restify-starter-api-" + logDate + ".log");
+	var logFilespec = path.join(logPath, "jessica-janiuk-api-" + logDate + ".log");
 	console.log(logFilespec);
 
 	if (!fs.existsSync(logPath)) {
@@ -21,7 +21,7 @@ exports.StartServer = function(env) {
 	}
 
 	var log = bunyan.createLogger({
-	  name: 'api.restify-starter.local',
+	  name: 'api.jessica-janiuk.local',
 	  streams: [
 	    {
 	      level: (settings.logging.console || 'error'),
@@ -38,7 +38,7 @@ exports.StartServer = function(env) {
 	});
 
 	var server = Restify.createServer({
-		name: 'api.restify-starter.local',
+		name: 'api.jessica-janiuk.local',
 		log: log
 	});
 
