@@ -7,9 +7,6 @@ import debug from 'debug';
 import router from './config/routes';
 import cfg from './config/config';
 
-let env       = process.env.NODE_ENV || 'development';
-let config    = cfg[env];
-
 let app = express();
 app.server = http.createServer(app);
 

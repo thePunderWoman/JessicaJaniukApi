@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     publishDate: DataTypes.DATE
   }, {
     classMethods: {
-      associate: (models) => {
+      associate: () => {
         // associations can be defined here
       }
     }

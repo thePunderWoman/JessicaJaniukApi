@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: DataTypes.BOOLEAN,
   }, {
     classMethods: {
-      associate: (models) => {
+      associate: () => {
         // associations can be defined here
       }
     }
