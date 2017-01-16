@@ -2,11 +2,14 @@ var restify = require('restify');
 var restifyValidator = require('restify-validator');
 var routes = require('./config/routes');
 
-var server = restify.createServer();
+var server = restify.createServer({
+  name: 'JessicaJaniuk v1'
+});
 
 server.pre(restify.CORS({
   origins: ['https://jessicajaniuk.com', 'http://localhost:4200'],   // defaults to ['*']
 }));
+server.use(restify.authorizationParser());
 server.use(restify.bodyParser());
 server.use(restify.queryParser());
 server.use(restify.gzipResponse());
