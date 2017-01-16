@@ -1,5 +1,5 @@
 'use strict';
-var passwordHelper = require('../helpers/passwordHelper');
+import passwordHelper from '../helpers/PasswordHelper';
 
 module.exports = {
   up: function (queryInterface) {
