@@ -3,6 +3,7 @@ var jwt = require('restify-jwt');
 var postController = require('../controllers/postController');
 var pageController = require('../controllers/pageController');
 var userController = require('../controllers/userController');
+var authController = require('../controllers/authController');
 var sharedSecret = require('../config/secret').secret;
 
 var routerInstance = new Router();
@@ -27,6 +28,9 @@ routerInstance.get('/user/:id', jwt({secret: sharedSecret}), userController.getB
 routerInstance.post('/user', jwt({secret: sharedSecret}), userController.add);
 routerInstance.put('/user/:id', jwt({secret: sharedSecret}), userController.update);
 routerInstance.del('/user/:id', jwt({secret: sharedSecret}) ,userController.delete);
+
+// log in
+routerInstance.post('/authenticate', authController.login);
 
 // add a route like you would on a restify server instance 
 routerInstance.get('/ping', function (req, res, next) {

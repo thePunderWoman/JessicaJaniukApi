@@ -4,13 +4,14 @@ var routes = require('./config/routes');
 
 var server = restify.createServer();
 
+server.pre(restify.CORS({
+  origins: ['https://jessicajaniuk.com', 'http://localhost:4200'],   // defaults to ['*']
+}));
 server.use(restify.bodyParser());
 server.use(restify.queryParser());
-server.use(restifyValidator);
-server.use(restify.CORS({
-  origins: ['https://jessicajaniuk.com'],   // defaults to ['*']
-}));
 server.use(restify.gzipResponse());
+server.use(restifyValidator);
+server.use(restify.fullResponse());
 routes.routerInstance.applyRoutes(server);
 
 server.listen(process.env.PORT || 3000, function() {
