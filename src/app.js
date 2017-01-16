@@ -7,7 +7,10 @@ var server = restify.createServer();
 server.use(restify.bodyParser());
 server.use(restify.queryParser());
 server.use(restifyValidator);
-
+server.use(restify.CORS({
+  origins: ['https://jessicajaniuk.com'],   // defaults to ['*']
+}));
+server.use(restify.gzipResponse());
 routes.routerInstance.applyRoutes(server);
 
 server.listen(process.env.PORT || 3000, function() {
