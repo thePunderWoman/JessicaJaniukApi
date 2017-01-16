@@ -1,10 +1,9 @@
 var bcrypt = require('bcrypt');
 
 exports.cryptPassword = function(password) {
-  var salt = bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
+  return bcrypt.hashSync(password, 10);
 };
 
 exports.comparePassword = function(password, userPassword) {
-  return bcrypt.compare(password, userPassword);
+  return bcrypt.compareSync(password, userPassword);
 };
