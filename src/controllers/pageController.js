@@ -4,8 +4,6 @@ var error_messages = null;
 
 function verifyRequiredParams(request) {
   request.assert('title', 'title field is required').notEmpty();
-  request.assert('published', 'published field is required').notEmpty();
-  request.assert('publishDate', 'publish date field must be a date').isDate();
 
   var errors = request.validationErrors();
   if (errors) {
@@ -21,12 +19,13 @@ function verifyRequiredParams(request) {
 }
 
 module.exports = {
+
   getAll: function(request, response, next) {
-    models.Post.findAll({})
-      .then(function(posts) {
+    models.Page.findAll({})
+      .then(function(pages) {
         var data = {
           error: 'false',
-          data: posts
+          data: pages
         };
 
         response.json(data);
@@ -35,14 +34,14 @@ module.exports = {
   },
 
   getById: function(request, response, next) {
-    models.Post.find({
+    models.Page.find({
       where: {
         'id': request.params.id
       }
-    }).then(function(post) {
+    }).then(function(page) {
       var data = {
         error: 'false',
-        data: post
+        data: page
       };
 
       response.json(data);
@@ -56,16 +55,14 @@ module.exports = {
       return;
     }
 
-    models.Post.create({
+    models.Page.create({
       title: request.params['title'],
       content: request.params['content'],
-      published: request.params['published'],
-      publishDate: request.params['publishDate'],
-    }).then(function(post) {
+    }).then(function(page) {
       var data = {
         error: 'false',
-        message: 'New post created successfully',
-        data: post
+        message: 'New page created successfully',
+        data: page
       };
 
       response.json(data);
@@ -79,22 +76,20 @@ module.exports = {
       return;
     }
 
-    models.Post.find({
+    models.Page.find({
       where: {
         'id': request.params.id
       }
-    }).then(function(post) {
-      if (post) {
-        post.updateAttributes({
+    }).then(function(page) {
+      if (page) {
+        page.updateAttributes({
           title: request.params['title'],
           content: request.params['content'],
-          published: request.params['published'],
-          publishDate: request.params['publishDate'],
-        }).then(function(post) {
+        }).then(function(page) {
           var data = {
             error: 'false',
-            message: 'Updated post successfully',
-            data: post
+            message: 'Updated page successfully',
+            data: page
           };
 
           response.json(data);
@@ -105,20 +100,19 @@ module.exports = {
   },
 
   delete: function(request, response, next) {
-    models.Post.destroy({
+    models.Page.destroy({
       where: {
         id: request.params['id']
       }
-    }).then(function(post) {
+    }).then(function(page) {
       var data = {
         error: 'false',
-        message: 'Deleted post successfully',
-        data: post
+        message: 'Deleted page successfully',
+        data: page
       };
 
       response.json(data);
       next();
     });
   }
-
 };

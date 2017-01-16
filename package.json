@@ -10,10 +10,13 @@
   },
   "author": "Jessica Janiuk",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "db-migrate": "^0.10.0-beta.20",
     "db-migrate-pg": "^0.1.11",
+    "jsonwebtoken": "^7.2.1",
     "pg": "^6.1.2",
     "restify": "^4.3.0",
+    "restify-jwt": "^0.4.0",
     "restify-plugins": "^1.5.1",
     "restify-router": "^0.3.1",
     "restify-validator": "^0.3.1",
