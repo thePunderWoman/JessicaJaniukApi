@@ -1,28 +1,30 @@
-var util = require('util');
-var models = require('../models/index');
-var error_messages = null;
+import util from 'util';
+import models from '../models/index';
 
-function verifyRequiredParams(request) {
-  request.assert('title', 'title field is required').notEmpty();
-
-  var errors = request.validationErrors();
-  if (errors) {
-    error_messages = {
-      error: 'true',
-      message: util.inspect(errors)
-    };
-
-    return false;
-  } else {
-    return true;
+export class PageController {
+  constructor() {
+    this.error_messages = null;
   }
-}
 
-module.exports = {
+  verifyRequiredParams(request) {
+    request.assert('title', 'title field is required').notEmpty();
 
-  getAll: function(request, response, next) {
+    var errors = request.validationErrors();
+    if (errors) {
+      this.error_messages = {
+        error: 'true',
+        message: util.inspect(errors)
+      };
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  getAll(request, response, next) {
     models.Page.findAll({})
-      .then(function(pages) {
+      .then((pages) => {
         var data = {
           error: 'false',
           data: pages
@@ -31,14 +33,14 @@ module.exports = {
         response.json(data);
         next();
       });
-  },
+  }
 
-  getById: function(request, response, next) {
+  getById(request, response, next) {
     models.Page.find({
       where: {
         'id': request.params.id
       }
-    }).then(function(page) {
+    }).then((page) => {
       var data = {
         error: 'false',
         data: page
@@ -47,18 +49,18 @@ module.exports = {
       response.json(data);
       next();
     });
-  },
+  }
 
-  add: function(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+  add(request, response, next) {
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
     models.Page.create({
       title: request.params['title'],
       content: request.params['content'],
-    }).then(function(page) {
+    }).then((page) => {
       var data = {
         error: 'false',
         message: 'New page created successfully',
@@ -68,11 +70,11 @@ module.exports = {
       response.json(data);
       next();
     });
-  },
+  }
 
-  update: function(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+  update(request, response, next) {
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -80,12 +82,12 @@ module.exports = {
       where: {
         'id': request.params.id
       }
-    }).then(function(page) {
+    }).then((page) => {
       if (page) {
         page.updateAttributes({
           title: request.params['title'],
           content: request.params['content'],
-        }).then(function(page) {
+        }).then((page) => {
           var data = {
             error: 'false',
             message: 'Updated page successfully',
@@ -97,14 +99,14 @@ module.exports = {
         });
       }
     });
-  },
+  }
 
-  delete: function(request, response, next) {
+  delete(request, response, next) {
     models.Page.destroy({
       where: {
         id: request.params['id']
       }
-    }).then(function(page) {
+    }).then((page) => {
       var data = {
         error: 'false',
         message: 'Deleted page successfully',
@@ -115,4 +117,4 @@ module.exports = {
       next();
     });
   }
-};
+}

@@ -1,43 +1,42 @@
-var Router = require('restify-router').Router;
-var jwt = require('restify-jwt');
-var postController = require('../controllers/postController');
-var pageController = require('../controllers/pageController');
-var userController = require('../controllers/userController');
-var authController = require('../controllers/authController');
-var sharedSecret = require('../config/secret').secret;
+import express from 'express';
+import { PostController } from '../controllers/PostController';
+import { PageController } from '../controllers/PageController';
+import { UserController } from '../controllers/UserController';
+import { AuthController } from '../controllers/AuthController';
+import auth from 'express-jwt-token';
 
-var routerInstance = new Router();
+let router = new express.Router();
+let postController = new PostController();
+let pageController = new PageController();
+let userController = new UserController();
+let authController = new AuthController();
 
 // post methods
-routerInstance.get('/post', postController.getAll);
-routerInstance.get('/post/:id', postController.getById);
-routerInstance.post('/post', jwt({secret: sharedSecret}),postController.add);
-routerInstance.put('/post/:id', jwt({secret: sharedSecret}),postController.update);
-routerInstance.del('/post/:id', jwt({secret: sharedSecret}),postController.delete);
+router.get('/post', postController.getAll);
+router.get('/post/:id', postController.getById);
+router.post('/post', auth.jwtAuthProtected, postController.add);
+router.put('/post/:id', auth.jwtAuthProtected, postController.update);
+router.delete('/post/:id', auth.jwtAuthProtected, postController.delete);
 
-// page methods
-routerInstance.get('/page', pageController.getAll);
-routerInstance.get('/page/:id', pageController.getById);
-routerInstance.post('/page', jwt({secret: sharedSecret}), pageController.add);
-routerInstance.put('/page/:id', jwt({secret: sharedSecret}), pageController.update);
-routerInstance.del('/page/:id', jwt({secret: sharedSecret}) ,pageController.delete);
+// // page methods
+router.get('/page', pageController.getAll);
+router.get('/page/:id', pageController.getById);
+router.post('/page', auth.jwtAuthProtected, pageController.add);
+router.put('/page/:id', auth.jwtAuthProtected, pageController.update);
+router.delete('/page/:id', auth.jwtAuthProtected, pageController.delete);
 
-// user methods
-routerInstance.get('/user', jwt({secret: sharedSecret}), userController.getAll);
-routerInstance.get('/user/:id', jwt({secret: sharedSecret}), userController.getById);
-routerInstance.post('/user', jwt({secret: sharedSecret}), userController.add);
-routerInstance.put('/user/:id', jwt({secret: sharedSecret}), userController.update);
-routerInstance.del('/user/:id', jwt({secret: sharedSecret}) ,userController.delete);
+// // user methods
+router.get('/user', auth.jwtAuthProtected, userController.getAll);
+router.get('/user/:id', auth.jwtAuthProtected, userController.getById);
+router.post('/user', auth.jwtAuthProtected, userController.add);
+router.put('/user/:id', auth.jwtAuthProtected, userController.update);
+router.delete('/user/:id', auth.jwtAuthProtected, userController.delete);
 
 // log in
-routerInstance.post('/authenticate', authController.login);
+router.post('/authenticate', authController.login);
 
-// add a route like you would on a restify server instance 
-routerInstance.get('/ping', function (req, res, next) {
-  res.json('pong');
-  next();
+router.get('/ping', (req, res) => {
+  res.json({ response: 'pong'});
 });
   
-module.exports = {
-  routerInstance: routerInstance
-};
+export default router;

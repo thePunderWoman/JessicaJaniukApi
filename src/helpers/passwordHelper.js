@@ -1,9 +1,15 @@
-var bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
-exports.cryptPassword = function(password) {
-  return bcrypt.hashSync(password, 10);
-};
+export class PasswordHelper {
+  constructor() {}
 
-exports.comparePassword = function(password, userPassword) {
-  return bcrypt.compareSync(password, userPassword);
-};
+  cryptPassword(password) {
+    return bcrypt.hashSync(password, 10);
+  }
+
+  comparePassword(password, userPassword) {
+    return bcrypt.compareSync(password, userPassword);
+  }
+}
+
+export default new PasswordHelper();

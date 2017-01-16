@@ -2,7 +2,7 @@
 var passwordHelper = require('../helpers/passwordHelper');
 
 module.exports = {
-  up: function (queryInterface, Sequelize) {
+  up: function (queryInterface) {
     return queryInterface.bulkInsert('Users', [{
       firstName: 'Jessica',
       lastName: 'Janiuk',
@@ -15,7 +15,7 @@ module.exports = {
     }], {});
   },
 
-  down: function (queryInterface, Sequelize) {
+  down: function () {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
