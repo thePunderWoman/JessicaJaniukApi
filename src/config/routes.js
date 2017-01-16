@@ -3,7 +3,8 @@ import { PostController } from '../controllers/PostController';
 import { PageController } from '../controllers/PageController';
 import { UserController } from '../controllers/UserController';
 import { AuthController } from '../controllers/AuthController';
-import auth from 'express-jwt-token';
+import jwt from 'express-jwt';
+import sharedSecret from '../config/secret';
 
 let router = new express.Router();
 let postController = new PostController();
@@ -14,23 +15,23 @@ let authController = new AuthController();
 // post methods
 router.get('/post', postController.getAll);
 router.get('/post/:id', postController.getById);
-router.post('/post', auth.jwtAuthProtected, postController.add);
-router.put('/post/:id', auth.jwtAuthProtected, postController.update);
-router.delete('/post/:id', auth.jwtAuthProtected, postController.delete);
+router.post('/post', jwt({secret: sharedSecret}), postController.add);
+router.put('/post/:id', jwt({secret: sharedSecret}), postController.update);
+router.delete('/post/:id', jwt({secret: sharedSecret}), postController.delete);
 
 // // page methods
 router.get('/page', pageController.getAll);
 router.get('/page/:id', pageController.getById);
-router.post('/page', auth.jwtAuthProtected, pageController.add);
-router.put('/page/:id', auth.jwtAuthProtected, pageController.update);
-router.delete('/page/:id', auth.jwtAuthProtected, pageController.delete);
+router.post('/page', jwt({secret: sharedSecret}), pageController.add);
+router.put('/page/:id', jwt({secret: sharedSecret}), pageController.update);
+router.delete('/page/:id', jwt({secret: sharedSecret}), pageController.delete);
 
 // // user methods
-router.get('/user', auth.jwtAuthProtected, userController.getAll);
-router.get('/user/:id', auth.jwtAuthProtected, userController.getById);
-router.post('/user', auth.jwtAuthProtected, userController.add);
-router.put('/user/:id', auth.jwtAuthProtected, userController.update);
-router.delete('/user/:id', auth.jwtAuthProtected, userController.delete);
+router.get('/user', jwt({secret: sharedSecret}), userController.getAll);
+router.get('/user/:id', jwt({secret: sharedSecret}), userController.getById);
+router.post('/user', jwt({secret: sharedSecret}), userController.add);
+router.put('/user/:id', jwt({secret: sharedSecret}), userController.update);
+router.delete('/user/:id', jwt({secret: sharedSecret}), userController.delete);
 
 // log in
 router.post('/authenticate', authController.login);

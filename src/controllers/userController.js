@@ -29,7 +29,9 @@ export class UserController {
   }
 
   getAll(request, response, next) {
-    models.User.findAll({})
+    models.User.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
+    })
       .then((users) => {
         var data = {
           error: 'false',
@@ -44,6 +46,7 @@ export class UserController {
   getById(request, response, next) {
     models.User.find({
       where: {
+        attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin'],
         'id': request.params.id
       }
     }).then((user) => {
