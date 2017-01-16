@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-import cfg from '../config/config';
 
+let cfg = require('../config/config.json');
 let basename  = path.basename(module.filename);
 let env       = process.env.NODE_ENV || 'development';
 let config    = cfg[env];

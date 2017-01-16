@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import models from './models';
 import debug from 'debug';
 import router from './config/routes';
-import cfg from './config/config';
+let cfg = require('./config/config.json');
 
 let app = express();
 app.server = http.createServer(app);
