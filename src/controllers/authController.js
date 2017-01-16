@@ -13,7 +13,6 @@ module.exports = {
       var data = {
         error: true,
         message: 'Authentication failed',
-        data: {}
       };
       if (user && passwordHelper.comparePassword(request.params.password, user.password)) {
         var userResponse = { 
@@ -27,10 +26,11 @@ module.exports = {
         data = {
           error: false,
           message: 'Authentication Successful',
-          data: { token: token, user: userResponse }
+          token: token,
+          user: userResponse
         };
       }
-      response.json(data);
+      response.json(200, data);
       next();
     });
   }

@@ -12,6 +12,7 @@ server.use(restify.queryParser());
 server.use(restify.gzipResponse());
 server.use(restifyValidator);
 server.use(restify.fullResponse());
+
 routes.routerInstance.applyRoutes(server);
 
 server.listen(process.env.PORT || 3000, function() {
