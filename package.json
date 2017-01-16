@@ -14,6 +14,7 @@
     "db-migrate-pg": "^0.1.11",
     "pg": "^6.1.2",
     "restify": "^4.3.0",
+    "restify-jwt": "^0.4.0",
     "restify-plugins": "^1.5.1",
     "restify-router": "^0.3.1",
     "restify-validator": "^0.3.1",
