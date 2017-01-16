@@ -1,1 +1,1 @@
-exports.secret = 'stuuuuuuuffff';
+export default 'stuuuuuuuffff';

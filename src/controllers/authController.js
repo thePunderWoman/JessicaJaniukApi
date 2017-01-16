@@ -1,20 +1,22 @@
-var models = require('../models/index');
-var passwordHelper = require('../helpers/passwordHelper');
-var jwt = require('jsonwebtoken');
-var sharedSecret = require('../config/secret').secret;
+import models from '../models/index';
+import passwordHelper from '../helpers/PasswordHelper';
+import jwt from 'jsonwebtoken';
+import sharedSecret from '../config/secret';
 
-module.exports = {
-  login: function(request, response, next) {
+export class AuthController {
+  constructor() {}
+  
+  login(request, response, next) {
     models.User.find({
       where: {
-        'username': request.params.username
+        'username': request.body.username
       }
-    }).then(function(user) {
+    }).then((user) => {
       var data = {
         error: true,
         message: 'Authentication failed',
       };
-      if (user && passwordHelper.comparePassword(request.params.password, user.password)) {
+      if (user && passwordHelper.comparePassword(request.body.password, user.password)) {
         var userResponse = { 
           firstName: user.firstName,
           lastName: user.lastName,
@@ -30,8 +32,8 @@ module.exports = {
           user: userResponse
         };
       }
-      response.json(200, data);
+      response.status(200).json(data);
       next();
     });
   }
-};
+}

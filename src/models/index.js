@@ -1,13 +1,15 @@
 'use strict';
 
-var fs        = require('fs');
-var path      = require('path');
-var Sequelize = require('sequelize');
-var basename  = path.basename(module.filename);
-var env       = process.env.NODE_ENV || 'development';
-var config    = require('../config/config.json')[env];
-var db        = {};
-var sequelize;
+import fs from 'fs';
+import path from 'path';
+import Sequelize from 'sequelize';
+import cfg from '../config/config';
+
+let basename  = path.basename(module.filename);
+let env       = process.env.NODE_ENV || 'development';
+let config    = cfg[env];
+let db        = {};
+let sequelize;
 
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -39,4 +41,4 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export default db;

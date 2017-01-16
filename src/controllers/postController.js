@@ -1,29 +1,32 @@
-var util = require('util');
-var models = require('../models/index');
-var error_messages = null;
+import util from 'util';
+import models from '../models/index';
 
-function verifyRequiredParams(request) {
-  request.assert('title', 'title field is required').notEmpty();
-  request.assert('published', 'published field is required').notEmpty();
-  request.assert('publishDate', 'publish date field must be a date').isDate();
-
-  var errors = request.validationErrors();
-  if (errors) {
-    error_messages = {
-      error: 'true',
-      message: util.inspect(errors)
-    };
-
-    return false;
-  } else {
-    return true;
+export class PostController {
+  constructor() {
+    this.error_messages = null;
   }
-}
 
-module.exports = {
-  getAll: function(request, response, next) {
+  verifyRequiredParams(request) {
+    request.assert('title', 'title field is required').notEmpty();
+    request.assert('published', 'published field is required').notEmpty();
+    request.assert('publishDate', 'publish date field must be a date').isDate();
+
+    var errors = request.validationErrors();
+    if (errors) {
+      this.error_messages = {
+        error: 'true',
+        message: util.inspect(errors)
+      };
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  getAll(request, response, next) {
     models.Post.findAll({})
-      .then(function(posts) {
+      .then((posts) => {
         var data = {
           error: 'false',
           data: posts
@@ -32,14 +35,14 @@ module.exports = {
         response.json(data);
         next();
       });
-  },
+  }
 
-  getById: function(request, response, next) {
+  getById(request, response, next) {
     models.Post.find({
       where: {
         'id': request.params.id
       }
-    }).then(function(post) {
+    }).then((post) => {
       var data = {
         error: 'false',
         data: post
@@ -48,11 +51,11 @@ module.exports = {
       response.json(data);
       next();
     });
-  },
+  }
 
-  add: function(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+  add(request, response, next) {
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -61,7 +64,7 @@ module.exports = {
       content: request.params['content'],
       published: request.params['published'],
       publishDate: request.params['publishDate'],
-    }).then(function(post) {
+    }).then((post) => {
       var data = {
         error: 'false',
         message: 'New post created successfully',
@@ -71,11 +74,11 @@ module.exports = {
       response.json(data);
       next();
     });
-  },
+  }
 
-  update: function(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+  update(request, response, next) {
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -83,14 +86,14 @@ module.exports = {
       where: {
         'id': request.params.id
       }
-    }).then(function(post) {
+    }).then((post) => {
       if (post) {
         post.updateAttributes({
           title: request.params['title'],
           content: request.params['content'],
           published: request.params['published'],
           publishDate: request.params['publishDate'],
-        }).then(function(post) {
+        }).then((post) => {
           var data = {
             error: 'false',
             message: 'Updated post successfully',
@@ -102,14 +105,14 @@ module.exports = {
         });
       }
     });
-  },
+  }
 
-  delete: function(request, response, next) {
+  delete(request, response, next) {
     models.Post.destroy({
       where: {
         id: request.params['id']
       }
-    }).then(function(post) {
+    }).then((post) => {
       var data = {
         error: 'false',
         message: 'Deleted post successfully',
@@ -120,5 +123,4 @@ module.exports = {
       next();
     });
   }
-
-};
+}
