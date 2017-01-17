@@ -3,4 +3,26 @@
 
 This is the rest API that goes along with Jessica Janiuk's personal website at [JessicaJaniuk.com](https://jessicajaniuk.com). That repo is located [here](https://github.com/janiukjf/JessicaJaniuk).
 
-This API project is using restify and node.js.
+This API project is using express and node.js.
+
+
+# Backlog
+- [x] Add server
+- [x] Add routing
+- [x] Add CORS
+- [x] Add jwt
+- [x] Add sequelize
+- [x] Add migrations and seeds
+- [x] Add controllers
+- [x] Add automated deploy scripts
+- [x] Add authentication endpoints
+- [ ] Add indexes
+- [ ] Add post key field
+- [ ] Backfill old data
+- [ ] Add pagination
+- [ ] Add sorting
+- [ ] Add blog search endpoints
+- [ ] Add blog calendar endpoints
+- [ ] Add blog history endpoints
+- [ ] Add comment table
+- [ ] Add comment endpoints
