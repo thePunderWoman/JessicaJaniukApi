@@ -4,7 +4,11 @@ export class PasswordHelper {
   constructor() {}
 
   cryptPassword(password) {
-    return bcrypt.hashSync(password, 10);
+    let salt = bcrypt.genSaltSync(10);
+    console.log('salt: ' + salt);
+    console.log('password: ' + password);
+
+    return bcrypt.hashSync(password, salt);
   }
 
   comparePassword(password, userPassword) {

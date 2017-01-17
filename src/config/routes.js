@@ -31,6 +31,7 @@ router.get('/user', jwt({secret: sharedSecret}), userController.getAll);
 router.get('/user/:id', jwt({secret: sharedSecret}), userController.getById);
 router.post('/user', jwt({secret: sharedSecret}), userController.add);
 router.put('/user/:id', jwt({secret: sharedSecret}), userController.update);
+router.put('/user/:id/password', jwt({secret: sharedSecret}), userController.setPassword);
 router.delete('/user/:id', jwt({secret: sharedSecret}), userController.delete);
 
 // log in

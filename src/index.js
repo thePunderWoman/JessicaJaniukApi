@@ -2,6 +2,7 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import expressValidator from 'express-validator';
 import models from './models';
 import debug from 'debug';
 import router from './config/routes';
@@ -23,6 +24,7 @@ app.use(bodyParser.json({
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
 app.use('/', router);
 
 let port = process.env.PORT || cfg.globals.port;

@@ -2,31 +2,29 @@ import util from 'util';
 import models from '../models/index';
 import passwordHelper from '../helpers/passwordHelper';
 
+function verifyRequiredParams(request) {
+  request.assert('firstName', 'First Name is required').notEmpty();
+  request.assert('lastName', 'Last Name is required').notEmpty();
+  request.assert('email', 'Email address is required').notEmpty().isEmail();
+  request.assert('username', 'username is required').notEmpty();
+  request.assert('isAdmin', 'isAdmin is required').isBoolean();
+
+  var errors = request.validationErrors();
+  if (errors) {
+    error_messages = {
+      error: 'true',
+      message: util.inspect(errors)
+    };
+
+    return false;
+  } else {
+    return true;
+  }
+}
+let error_messages = null;
+
 export class UserController {
-  constructor() {
-    this.error_messages = null;
-  }
-
-  verifyRequiredParams(request) {
-    request.assert('firstName', 'First Name is required').notEmpty();
-    request.assert('lastName', 'Last Name is required').notEmpty();
-    request.assert('email', 'Email address is required').notEmpty().isEmail();
-    request.assert('username', 'username is required').notEmpty();
-    request.assert('password', 'password is required').notEmpty();
-    request.assert('isAdmin', 'isAdmin is required').isBoolean();
-
-    var errors = request.validationErrors();
-    if (errors) {
-      this.error_messages = {
-        error: 'true',
-        message: util.inspect(errors)
-      };
-
-      return false;
-    } else {
-      return true;
-    }
-  }
+  constructor() {}
 
   getAll(request, response, next) {
     models.User.findAll({
@@ -45,8 +43,8 @@ export class UserController {
 
   getById(request, response, next) {
     models.User.find({
+      attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'isAdmin'],
       where: {
-        attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin'],
         'id': request.params.id
       }
     }).then((user) => {
@@ -61,18 +59,17 @@ export class UserController {
   }
 
   add(request, response, next) {
-    if (!this.verifyRequiredParams(request)) {
-      response.json(422, this.error_messages);
+    if (!verifyRequiredParams(request)) {
+      response.json(422, error_messages);
       return;
     }
 
     models.User.create({
-      firstName: request.params['firstName'],
-      lastName: request.params['lastName'],
-      email: request.params['email'],
-      username: request.params['username'],
-      password: passwordHelper.cryptPassword(request.params['password']),
-      isAdmin: request.params['isAdmin'],
+      firstName: request.body['firstName'],
+      lastName: request.body['lastName'],
+      email: request.body['email'],
+      username: request.body['username'],
+      isAdmin: request.body['isAdmin'],
     }).then((user) => {
       var data = {
         error: 'false',
@@ -86,8 +83,8 @@ export class UserController {
   }
 
   update(request, response, next) {
-    if (!this.verifyRequiredParams(request)) {
-      response.json(422, this.error_messages);
+    if (!verifyRequiredParams(request)) {
+      response.json(422, error_messages);
       return;
     }
 
@@ -98,12 +95,11 @@ export class UserController {
     }).then((user) => {
       if (user) {
         user.updateAttributes({
-          firstName: request.params['firstName'],
-          lastName: request.params['lastName'],
-          email: request.params['email'],
-          username: request.params['username'],
-          password: passwordHelper.cryptPassword(request.params['password']),
-          isAdmin: request.params['isAdmin'],
+          firstName: request.body['firstName'],
+          lastName: request.body['lastName'],
+          email: request.body['email'],
+          username: request.body['username'],
+          isAdmin: request.body['isAdmin'],
         }).then((user) => {
           var data = {
             error: 'false',
@@ -111,6 +107,28 @@ export class UserController {
             data: user
           };
 
+          response.json(data);
+          next();
+        });
+      }
+    });
+  }
+
+  setPassword(request, response, next) {
+    models.User.find({
+      where: {
+        'id': request.params.id
+      }
+    }).then((user) => {
+      if (user) {
+        user.updateAttributes({
+          password: passwordHelper.cryptPassword(request.body['password']),
+        }).then(() => {
+          var data = {
+            error: 'false',
+            message: 'Updated user password successfully',
+            data: { updated: true }
+          };
           response.json(data);
           next();
         });

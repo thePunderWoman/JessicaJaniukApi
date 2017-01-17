@@ -24,11 +24,14 @@ export class AuthController {
           username: user.username,
           isAdmin: user.isAdmin
         };
-        var token = jwt.sign(userResponse, sharedSecret, { expiresIn: Math.floor(Date.now() / 1000) + (60 * 60)});
+        var token = jwt.sign(userResponse, sharedSecret, { expiresIn: '1d' });
+        var expires = new Date();
+        expires.setDate(expires.getDate() + 1);
         data = {
           error: false,
           message: 'Authentication Successful',
           token: token,
+          expires: expires,
           user: userResponse
         };
       }
