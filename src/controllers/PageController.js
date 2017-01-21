@@ -8,6 +8,7 @@ export class PageController {
 
   verifyRequiredParams(request) {
     request.assert('title', 'title field is required').notEmpty();
+    request.assert('key', 'key field is required').notEmpty();
 
     var errors = request.validationErrors();
     if (errors) {
@@ -51,6 +52,22 @@ export class PageController {
     });
   }
 
+  getByKey(request, response, next) {
+    models.Page.find({
+      where: {
+        'key': request.params.key
+      }
+    }).then((page) => {
+      var data = {
+        error: 'false',
+        data: page
+      };
+
+      response.json(data);
+      next();
+    });
+  }
+
   add(request, response, next) {
     if (!this.verifyRequiredParams(request)) {
       response.json(422, this.error_messages);
@@ -58,8 +75,9 @@ export class PageController {
     }
 
     models.Page.create({
-      title: request.params['title'],
-      content: request.params['content'],
+      title: request.body['title'],
+      content: request.body['content'],
+      key: request.body['key'],
     }).then((page) => {
       var data = {
         error: 'false',
@@ -85,8 +103,9 @@ export class PageController {
     }).then((page) => {
       if (page) {
         page.updateAttributes({
-          title: request.params['title'],
-          content: request.params['content'],
+          title: request.body['title'],
+          content: request.body['content'],
+          key: request.body['key'],
         }).then((page) => {
           var data = {
             error: 'false',
