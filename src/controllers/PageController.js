@@ -22,7 +22,12 @@ let error_messages = null;
 export class PageController {
 
   getAll(request, response, next) {
-    models.Page.findAll({})
+    let page = request.params.page || 1;
+    models.Page.findAll({
+      order: 'title ASC',
+      limit: 10,
+      offset: (page - 1) * 10
+    })
       .then((pages) => {
         var data = {
           error: 'false',

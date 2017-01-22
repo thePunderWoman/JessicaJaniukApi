@@ -25,7 +25,36 @@ export class PostController {
   }
 
   getAll(request, response, next) {
-    models.Post.findAll({})
+    let page = request.params.page || 1;
+    models.Post.findAll({
+      order: 'publishDate DESC',
+      limit: 10,
+      offset: (page - 1) * 10
+    })
+      .then((posts) => {
+        var data = {
+          error: 'false',
+          data: posts
+        };
+
+        response.json(data);
+        next();
+      });
+  }
+
+  getAllPublished(request, response, next) {
+    let page = request.params.page || 1;
+    models.Post.findAll({
+      where: {
+        'published': true,
+        'publishDate': {
+          $lte: new Date() 
+        }
+      },
+      order: 'publishDate DESC',
+      limit: 10,
+      offset: (page - 1) * 10
+    })
       .then((posts) => {
         var data = {
           error: 'false',

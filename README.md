@@ -16,11 +16,11 @@ This API project is using express and node.js.
 - [x] Add controllers
 - [x] Add automated deploy scripts
 - [x] Add authentication endpoints
-- [ ] Add indexes
+- [x] Add page key field
+- [x] Add pagination
 - [ ] Add post key field
+- [ ] Add indexes
 - [ ] Backfill old data
-- [ ] Add pagination
-- [ ] Add sorting
 - [ ] Add blog search endpoints
 - [ ] Add blog calendar endpoints
 - [ ] Add blog history endpoints
