@@ -1,27 +1,25 @@
 import util from 'util';
 import models from '../models/index';
 
+function verifyRequiredParams(request) {
+  request.assert('title', 'title field is required').notEmpty();
+  request.assert('key', 'key field is required').notEmpty();
+
+  var errors = request.validationErrors();
+  if (errors) {
+    error_messages = {
+      error: 'true',
+      message: util.inspect(errors)
+    };
+
+    return false;
+  } else {
+    return true;
+  }
+}
+let error_messages = null;
+
 export class PageController {
-  constructor() {
-    this.error_messages = null;
-  }
-
-  verifyRequiredParams(request) {
-    request.assert('title', 'title field is required').notEmpty();
-    request.assert('key', 'key field is required').notEmpty();
-
-    var errors = request.validationErrors();
-    if (errors) {
-      this.error_messages = {
-        error: 'true',
-        message: util.inspect(errors)
-      };
-
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   getAll(request, response, next) {
     models.Page.findAll({})
@@ -69,8 +67,8 @@ export class PageController {
   }
 
   add(request, response, next) {
-    if (!this.verifyRequiredParams(request)) {
-      response.json(422, this.error_messages);
+    if (!verifyRequiredParams(request)) {
+      response.json(422, error_messages);
       return;
     }
 
@@ -91,8 +89,8 @@ export class PageController {
   }
 
   update(request, response, next) {
-    if (!this.verifyRequiredParams(request)) {
-      response.json(422, this.error_messages);
+    if (!verifyRequiredParams(request)) {
+      response.json(422, error_messages);
       return;
     }
 
