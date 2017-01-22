@@ -1,5 +1,6 @@
 import express from 'express';
 import { PostController } from '../controllers/PostController';
+import { ConnectionController } from '../controllers/ConnectionController';
 import { PageController } from '../controllers/PageController';
 import { UserController } from '../controllers/UserController';
 import { AuthController } from '../controllers/AuthController';
@@ -11,6 +12,7 @@ let postController = new PostController();
 let pageController = new PageController();
 let userController = new UserController();
 let authController = new AuthController();
+let connectionController = new ConnectionController();
 
 // post methods
 router.get('/post', postController.getAll);
@@ -19,7 +21,14 @@ router.post('/post', jwt({secret: sharedSecret}), postController.add);
 router.put('/post/:id', jwt({secret: sharedSecret}), postController.update);
 router.delete('/post/:id', jwt({secret: sharedSecret}), postController.delete);
 
-// // page methods
+// connection methods
+router.get('/connection', connectionController.getAll);
+router.get('/connection/:id', connectionController.getById);
+router.post('/connection', jwt({secret: sharedSecret}), connectionController.add);
+router.put('/connection/:id', jwt({secret: sharedSecret}), connectionController.update);
+router.delete('/connection/:id', jwt({secret: sharedSecret}), connectionController.delete);
+
+// page methods
 router.get('/page', pageController.getAll);
 router.get('/page/:id', pageController.getById);
 router.get('/page/key/:key', pageController.getByKey);
@@ -27,7 +36,7 @@ router.post('/page', jwt({secret: sharedSecret}), pageController.add);
 router.put('/page/:id', jwt({secret: sharedSecret}), pageController.update);
 router.delete('/page/:id', jwt({secret: sharedSecret}), pageController.delete);
 
-// // user methods
+// user methods
 router.get('/user', jwt({secret: sharedSecret}), userController.getAll);
 router.get('/user/:id', jwt({secret: sharedSecret}), userController.getById);
 router.post('/user', jwt({secret: sharedSecret}), userController.add);

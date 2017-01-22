@@ -123,11 +123,11 @@ export class UserController {
       if (user) {
         user.updateAttributes({
           password: passwordHelper.cryptPassword(request.body['password']),
-        }).then(() => {
+        }).then((user) => {
           var data = {
             error: 'false',
             message: 'Updated user password successfully',
-            data: { updated: true }
+            data: { id: user.id, updated: true }
           };
           response.json(data);
           next();
