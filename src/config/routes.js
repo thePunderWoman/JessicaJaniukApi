@@ -22,6 +22,7 @@ router.delete('/post/:id', jwt({secret: sharedSecret}), postController.delete);
 // // page methods
 router.get('/page', pageController.getAll);
 router.get('/page/:id', pageController.getById);
+router.get('/page/key/:key', pageController.getByKey);
 router.post('/page', jwt({secret: sharedSecret}), pageController.add);
 router.put('/page/:id', jwt({secret: sharedSecret}), pageController.update);
 router.delete('/page/:id', jwt({secret: sharedSecret}), pageController.delete);

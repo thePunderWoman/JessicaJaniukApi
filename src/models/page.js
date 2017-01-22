@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   var Page = sequelize.define('Page', {
     title: DataTypes.STRING,
-    content: DataTypes.STRING
+    content: DataTypes.STRING,
+    key: DataTypes.STRING,
   }, {
     classMethods: {
       associate: () => {
