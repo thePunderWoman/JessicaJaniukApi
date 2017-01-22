@@ -49,7 +49,7 @@ export class PostController {
 
   getAllPublished(request, response, next) {
     let page = request.query.page || 1;
-    models.Post.findAll({
+    models.Post.findAndCountAll({
       where: {
         'published': true,
         'publishDate': {
@@ -65,7 +65,11 @@ export class PostController {
       .then((posts) => {
         var data = {
           error: 'false',
-          data: posts
+          data: {
+            posts: posts.rows,
+            page: page,
+            count: posts.count
+          }
         };
 
         response.json(data);
