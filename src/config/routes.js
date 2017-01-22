@@ -16,6 +16,7 @@ let connectionController = new ConnectionController();
 
 // post methods
 router.get('/post', postController.getAll);
+router.get('/post/published', postController.getAllPublished);
 router.get('/post/:id', postController.getById);
 router.post('/post', jwt({secret: sharedSecret}), postController.add);
 router.put('/post/:id', jwt({secret: sharedSecret}), postController.update);

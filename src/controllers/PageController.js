@@ -24,7 +24,9 @@ export class PageController {
   getAll(request, response, next) {
     let page = request.params.page || 1;
     models.Page.findAll({
-      order: 'title ASC',
+      order: [
+        ['title', 'ASC']
+      ],
       limit: 10,
       offset: (page - 1) * 10
     })

@@ -25,7 +25,9 @@ export class ConnectionController {
 
   getAll(request, response, next) {
     models.Connection.findAll({
-      order: 'name ASC',
+      order: [
+        ['name', 'ASC']
+      ],
     })
       .then((connections) => {
         var data = {
