@@ -13,7 +13,7 @@ app.server = http.createServer(app);
 
 // 3rd party middleware
 app.use(cors({
-  origin: ['https://jessicajaniuk.com', 'http://localhost:4200'],
+  origin: ['https://jessicajaniuk.com', 'https://www.jessicajaniuk.com', 'http://localhost:4200'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization'],
   preflightContinue: false
