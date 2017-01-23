@@ -73,7 +73,6 @@ export class PostController {
         };
 
         response.json(data);
-        next();
       });
   }
 
