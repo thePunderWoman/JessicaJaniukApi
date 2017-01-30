@@ -18,7 +18,7 @@ This API project is using express and node.js.
 - [x] Add authentication endpoints
 - [x] Add page key field
 - [x] Add pagination
-- [ ] Add Post Categories
+- [x] Add Post Categories
 - [ ] Add Post Tags
 - [ ] Add post key field
 - [ ] Add indexes
