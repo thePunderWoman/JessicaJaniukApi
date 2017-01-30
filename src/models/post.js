@@ -7,8 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     publishDate: DataTypes.DATE
   }, {
     classMethods: {
-      associate: () => {
+      associate: (models) => {
         // associations can be defined here
+        Post.belongsTo(models.Category, { foreignKey: 'categoryId'});
       }
     }
   });

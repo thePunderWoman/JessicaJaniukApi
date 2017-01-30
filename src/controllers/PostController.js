@@ -1,11 +1,11 @@
 import util from 'util';
 import models from '../models/index';
-import sequelize from 'sequelize';
 
 function verifyRequiredParams(request) {
   request.assert('title', 'title field is required').notEmpty();
   request.assert('published', 'published field is required').notEmpty();
   request.assert('publishDate', 'publish date field must be a date').isDate();
+  request.assert('categoryId', 'category is required').notEmpty();
 
   var errors = request.validationErrors();
   if (errors) {
@@ -26,6 +26,7 @@ export class PostController {
   getAll(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
+      include: [models.Category],
       order: [
         ['publishDate', 'DESC']
       ],
@@ -50,6 +51,7 @@ export class PostController {
   getAllPublished(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
+      include: [models.Category],
       where: {
         'published': true,
         'publishDate': {
@@ -78,6 +80,7 @@ export class PostController {
 
   getById(request, response, next) {
     models.Post.find({
+      include: [models.Category],
       where: {
         'id': request.params.id
       }
@@ -103,6 +106,7 @@ export class PostController {
       content: request.body['content'],
       published: request.body['published'],
       publishDate: request.body['publishDate'],
+      categoryId: request.body['categoryId'],
     }).then((post) => {
       var data = {
         error: 'false',
@@ -132,6 +136,7 @@ export class PostController {
           content: request.body['content'],
           published: request.body['published'],
           publishDate: request.body['publishDate'],
+          categoryId: request.body['categoryId'],
         }).then((post) => {
           var data = {
             error: 'false',

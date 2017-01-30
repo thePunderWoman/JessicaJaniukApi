@@ -3,6 +3,7 @@ import { PostController } from '../controllers/PostController';
 import { ConnectionController } from '../controllers/ConnectionController';
 import { PageController } from '../controllers/PageController';
 import { UserController } from '../controllers/UserController';
+import { CategoryController } from '../controllers/CategoryController';
 import { AuthController } from '../controllers/AuthController';
 import jwt from 'express-jwt';
 import sharedSecret from '../config/secret';
@@ -10,6 +11,7 @@ import sharedSecret from '../config/secret';
 let router = new express.Router();
 let postController = new PostController();
 let pageController = new PageController();
+let categoryController = new CategoryController();
 let userController = new UserController();
 let authController = new AuthController();
 let connectionController = new ConnectionController();
@@ -28,6 +30,13 @@ router.get('/connection/:id', connectionController.getById);
 router.post('/connection', jwt({secret: sharedSecret}), connectionController.add);
 router.put('/connection/:id', jwt({secret: sharedSecret}), connectionController.update);
 router.delete('/connection/:id', jwt({secret: sharedSecret}), connectionController.delete);
+
+// category methods
+router.get('/category', categoryController.getAll);
+router.get('/category/:id', categoryController.getById);
+router.post('/category', jwt({secret: sharedSecret}), categoryController.add);
+router.put('/category/:id', jwt({secret: sharedSecret}), categoryController.update);
+router.delete('/category/:id', jwt({secret: sharedSecret}), categoryController.delete);
 
 // page methods
 router.get('/page', pageController.getAll);
