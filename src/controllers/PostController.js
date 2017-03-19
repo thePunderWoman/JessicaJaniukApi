@@ -26,7 +26,7 @@ export class PostController {
   getAll(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       order: [
         ['publishDate', 'DESC']
       ],
@@ -51,7 +51,7 @@ export class PostController {
   getAllPublished(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       where: {
         'published': true,
         'publishDate': {
@@ -80,7 +80,7 @@ export class PostController {
 
   getById(request, response, next) {
     models.Post.find({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       where: {
         'id': request.params.id
       }
