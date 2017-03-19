@@ -28,3 +28,4 @@ This API project is using express and node.js.
 - [ ] Add blog history endpoints
 - [ ] Add comment table
 - [ ] Add comment endpoints
+- [ ] Merge into angular universal app
