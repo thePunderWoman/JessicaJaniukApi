@@ -19,6 +19,39 @@ function verifyRequiredParams(request) {
     return true;
   }
 }
+
+function addTagsToPost(tagNames, postId) {
+  tagNames.forEach(tag => tag.toLowerCase);
+  models.Tag.findAll({
+    where: {
+      'name': {'$in': tagNames}
+    }
+  }).then((tags) => {
+    let newTags = tags.filter((tag) => {
+      return tagNames.find((name) => name === tag.name) === undefined;
+    });
+
+    new Promise((resolve, reject) => {
+      newTags.forEach((tag) => {
+        models.Tag.create({
+          name: tag.trim().toLowerCase(),
+        })
+        .then((newTag) => {
+          tags.push(newTag);
+        });
+      });
+      resolve();
+    }).then(() => {
+      tags.forEach((postTag) => {
+        models.PostTag.create({
+          tagId: postTag.id,
+          postId: postId,
+        });
+      });
+    });
+  });
+}
+
 let error_messages = null;
 
 export class PostController {
@@ -131,13 +164,18 @@ export class PostController {
       }
     }).then((post) => {
       if (post) {
+
         post.updateAttributes({
           title: request.body['title'],
           content: request.body['content'],
           published: request.body['published'],
           publishDate: request.body['publishDate'],
           categoryId: request.body['categoryId'],
-        }).then((post) => {
+        })
+        .then((post) => {
+          addTagsToPost(request.body['tags'], post.Id);
+        })
+        .finally((post) => {
           var data = {
             error: 'false',
             message: 'Updated post successfully',
@@ -167,4 +205,5 @@ export class PostController {
       next();
     });
   }
+
 }

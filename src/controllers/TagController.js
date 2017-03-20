@@ -24,7 +24,7 @@ export class TagController {
     let page = request.params.page || 1;
     models.Tag.findAll({
       order: [
-        ['title', 'ASC']
+        ['name', 'ASC']
       ],
       limit: 10,
       offset: (page - 1) * 10
@@ -62,8 +62,8 @@ export class TagController {
       return;
     }
 
-    models.Page.create({
-      name: request.body['name'],
+    models.Tag.create({
+      name: request.body['name'].toLowerCase(),
     }).then((tag) => {
       var data = {
         error: 'false',
