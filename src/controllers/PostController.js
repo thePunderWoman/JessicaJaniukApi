@@ -66,6 +66,7 @@ export class PostController {
         };
 
         response.json(data);
+        next();
       });
   }
 
@@ -131,7 +132,7 @@ export class PostController {
           categoryId: request.body['categoryId'],
         })
         .then((post) => {
-          this.addTagsToPost(request.body['tags'], post.Id);
+          this.addTagsToPost(request.body['tags'], post.id);
         })
         .finally((post) => {
           var data = {
@@ -185,33 +186,34 @@ export class PostController {
 
   addTagsToPost(tagNames, postId) {
     tagNames.forEach(tag => tag.toLowerCase);
-    models.Tag.findAll({
-      where: {
-        'name': {'$in': tagNames}
-      }
-    }).then((tags) => {
-      let newTags = tags.filter((tag) => {
-        return tagNames.find((name) => name === tag.name) === undefined;
-      });
+    models.PostTag.destroy({ where: { PostId: postId } })
+      .then(() => {
+        return models.Tag.findAll({
+          where: {
+            'name': {'$in': tagNames}
+          }
+        });
+      }).then((tags) => {
+        let newTagName = tagNames.filter((name) => {
+          return tags.findIndex((tag) => { return name === tag.name; }) === -1;
+        });
 
-      new Promise((resolve, reject) => {
-        newTags.forEach((tag) => {
-          models.Tag.create({
-            name: tag.trim().toLowerCase(),
-          })
-          .then((newTag) => {
-            tags.push(newTag);
-          });
+        let newTags = newTagName.map((tag) => {
+          return { name: tag };
         });
-        resolve();
+
+        return models.Tag.bulkCreate(newTags);
       }).then(() => {
-        tags.forEach((postTag) => {
-          models.PostTag.create({
-            tagId: postTag.id,
-            postId: postId,
-          });
+        return models.Tag.findAll({
+          where: {
+            'name': {'$in': tagNames}
+          }
         });
+      }).then((tags) => {
+        let postTags = tags.map((tag) => {
+          return { TagId: tag.id, PostId: postId };
+        });
+        return models.PostTag.bulkCreate(postTags);
       });
-    });
   }
 }
