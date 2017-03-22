@@ -1,24 +1,16 @@
 import util from 'util';
 import models from '../models/index';
 
-function verifyRequiredParams(request) {
-  request.assert('name', 'name field is required').notEmpty();
-
-  var errors = request.validationErrors();
-  if (errors) {
-    error_messages = {
-      error: 'true',
-      message: util.inspect(errors)
-    };
-
-    return false;
-  } else {
-    return true;
-  }
-}
-let error_messages = null;
-
 export class TagController {
+  constructor() {
+    this.error_messages = null;
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.add = this.add.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.verifyRequiredParams = this.verifyRequiredParams.bind(this);
+  }
 
   getAll(request, response, next) {
     let page = request.params.page || 1;
@@ -57,8 +49,8 @@ export class TagController {
   }
 
   add(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -77,8 +69,8 @@ export class TagController {
   }
 
   update(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -119,5 +111,21 @@ export class TagController {
       response.json(data);
       next();
     });
+  }
+
+  verifyRequiredParams(request) {
+    request.assert('name', 'name field is required').notEmpty();
+
+    var errors = request.validationErrors();
+    if (errors) {
+      this.error_messages = {
+        error: 'true',
+        message: util.inspect(errors)
+      };
+
+      return false;
+    } else {
+      return true;
+    }
   }
 }
