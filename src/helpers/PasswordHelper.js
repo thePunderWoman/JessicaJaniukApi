@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 
 export class PasswordHelper {
-  constructor() {}
+  constructor() {
+    this.cryptPassword = this.cryptPassword.bind(this);
+    this.comparePassword = this.comparePassword.bind(this);
+  }
 
   cryptPassword(password) {
     let salt = bcrypt.genSaltSync(10);
-    console.log('salt: ' + salt);
-    console.log('password: ' + password);
-
     return bcrypt.hashSync(password, salt);
   }
 
