@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 import sharedSecret from '../config/secret';
 
 export class AuthController {
-  constructor() {}
+  constructor() {
+    this.login = this.login.bind(this);
+  }
   
   login(request, response, next) {
     models.User.find({

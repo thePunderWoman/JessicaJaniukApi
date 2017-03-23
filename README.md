@@ -19,7 +19,7 @@ This API project is using express and node.js.
 - [x] Add page key field
 - [x] Add pagination
 - [x] Add Post Categories
-- [ ] Add Post Tags
+- [x] Add Post Tags
 - [ ] Add post key field
 - [ ] Add indexes
 - [ ] Backfill old data
@@ -28,3 +28,4 @@ This API project is using express and node.js.
 - [ ] Add blog history endpoints
 - [ ] Add comment table
 - [ ] Add comment endpoints
+- [ ] Merge into angular universal app

@@ -1,32 +1,23 @@
 import util from 'util';
 import models from '../models/index';
 
-function verifyRequiredParams(request) {
-  request.assert('title', 'title field is required').notEmpty();
-  request.assert('published', 'published field is required').notEmpty();
-  request.assert('publishDate', 'publish date field must be a date').isDate();
-  request.assert('categoryId', 'category is required').notEmpty();
-
-  var errors = request.validationErrors();
-  if (errors) {
-    error_messages = {
-      error: 'true',
-      message: util.inspect(errors)
-    };
-
-    return false;
-  } else {
-    return true;
-  }
-}
-let error_messages = null;
-
 export class PostController {
+  constructor() {
+    this.error_messages = null;
+    this.getAll = this.getAll.bind(this);
+    this.getAllPublished = this.getAllPublished.bind(this);
+    this.getById = this.getById.bind(this);
+    this.add = this.add.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.verifyRequiredParams = this.verifyRequiredParams.bind(this);
+    this.addTagsToPost = this.addTagsToPost.bind(this);
+  }
 
   getAll(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       order: [
         ['publishDate', 'DESC']
       ],
@@ -48,10 +39,10 @@ export class PostController {
       });
   }
 
-  getAllPublished(request, response, next) {
+  getAllPublished(request, response) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       where: {
         'published': true,
         'publishDate': {
@@ -80,7 +71,7 @@ export class PostController {
 
   getById(request, response, next) {
     models.Post.find({
-      include: [models.Category],
+      include: [models.Category, models.Tag],
       where: {
         'id': request.params.id
       }
@@ -96,8 +87,8 @@ export class PostController {
   }
 
   add(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -120,8 +111,8 @@ export class PostController {
   }
 
   update(request, response, next) {
-    if (!verifyRequiredParams(request)) {
-      response.json(422, error_messages);
+    if (!this.verifyRequiredParams(request)) {
+      response.json(422, this.error_messages);
       return;
     }
 
@@ -131,13 +122,18 @@ export class PostController {
       }
     }).then((post) => {
       if (post) {
+
         post.updateAttributes({
           title: request.body['title'],
           content: request.body['content'],
           published: request.body['published'],
           publishDate: request.body['publishDate'],
           categoryId: request.body['categoryId'],
-        }).then((post) => {
+        })
+        .then((post) => {
+          this.addTagsToPost(request.body['tags'], post.id);
+        })
+        .finally((post) => {
           var data = {
             error: 'false',
             message: 'Updated post successfully',
@@ -166,5 +162,57 @@ export class PostController {
       response.json(data);
       next();
     });
+  }
+
+  verifyRequiredParams(request) {
+    request.assert('title', 'title field is required').notEmpty();
+    request.assert('published', 'published field is required').notEmpty();
+    request.assert('publishDate', 'publish date field must be a date').isDate();
+    request.assert('categoryId', 'category is required').notEmpty();
+
+    var errors = request.validationErrors();
+    if (errors) {
+      this.error_messages = {
+        error: 'true',
+        message: util.inspect(errors)
+      };
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  addTagsToPost(tagNames, postId) {
+    tagNames.forEach(tag => tag.toLowerCase);
+    models.PostTag.destroy({ where: { PostId: postId } })
+      .then(() => {
+        return models.Tag.findAll({
+          where: {
+            'name': {'$in': tagNames}
+          }
+        });
+      }).then((tags) => {
+        let newTagName = tagNames.filter((name) => {
+          return tags.findIndex((tag) => { return name === tag.name; }) === -1;
+        });
+
+        let newTags = newTagName.map((tag) => {
+          return { name: tag };
+        });
+
+        return models.Tag.bulkCreate(newTags);
+      }).then(() => {
+        return models.Tag.findAll({
+          where: {
+            'name': {'$in': tagNames}
+          }
+        });
+      }).then((tags) => {
+        let postTags = tags.map((tag) => {
+          return { TagId: tag.id, PostId: postId };
+        });
+        return models.PostTag.bulkCreate(postTags);
+      });
   }
 }

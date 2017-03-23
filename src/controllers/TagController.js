@@ -1,12 +1,11 @@
 import util from 'util';
 import models from '../models/index';
 
-export class PageController {
+export class TagController {
   constructor() {
     this.error_messages = null;
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
-    this.getByKey = this.getByKey.bind(this);
     this.add = this.add.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
@@ -15,17 +14,17 @@ export class PageController {
 
   getAll(request, response, next) {
     let page = request.params.page || 1;
-    models.Page.findAll({
+    models.Tag.findAll({
       order: [
-        ['title', 'ASC']
+        ['name', 'ASC']
       ],
       limit: 10,
       offset: (page - 1) * 10
     })
-      .then((pages) => {
+      .then((tag) => {
         var data = {
           error: 'false',
-          data: pages
+          data: tag
         };
 
         response.json(data);
@@ -34,30 +33,14 @@ export class PageController {
   }
 
   getById(request, response, next) {
-    models.Page.find({
+    models.Tag.find({
       where: {
         'id': request.params.id
       }
-    }).then((page) => {
+    }).then((tag) => {
       var data = {
         error: 'false',
-        data: page
-      };
-
-      response.json(data);
-      next();
-    });
-  }
-
-  getByKey(request, response, next) {
-    models.Page.find({
-      where: {
-        'key': request.params.key
-      }
-    }).then((page) => {
-      var data = {
-        error: 'false',
-        data: page
+        data: tag
       };
 
       response.json(data);
@@ -71,15 +54,13 @@ export class PageController {
       return;
     }
 
-    models.Page.create({
-      title: request.body['title'],
-      content: request.body['content'],
-      key: request.body['key'],
-    }).then((page) => {
+    models.Tag.create({
+      name: request.body['name'].toLowerCase(),
+    }).then((tag) => {
       var data = {
         error: 'false',
-        message: 'New page created successfully',
-        data: page
+        message: 'New tag created successfully',
+        data: tag
       };
 
       response.json(data);
@@ -93,21 +74,19 @@ export class PageController {
       return;
     }
 
-    models.Page.find({
+    models.Tag.find({
       where: {
         'id': request.params.id
       }
-    }).then((page) => {
-      if (page) {
-        page.updateAttributes({
-          title: request.body['title'],
-          content: request.body['content'],
-          key: request.body['key'],
-        }).then((page) => {
+    }).then((tag) => {
+      if (tag) {
+        tag.updateAttributes({
+          name: request.body['name'],
+        }).then((tag) => {
           var data = {
             error: 'false',
-            message: 'Updated page successfully',
-            data: page
+            message: 'Updated tag successfully',
+            data: tag
           };
 
           response.json(data);
@@ -118,15 +97,15 @@ export class PageController {
   }
 
   delete(request, response, next) {
-    models.Page.destroy({
+    models.Tag.destroy({
       where: {
         id: request.params['id']
       }
-    }).then((page) => {
+    }).then((tag) => {
       var data = {
         error: 'false',
-        message: 'Deleted page successfully',
-        data: page
+        message: 'Deleted tag successfully',
+        data: tag
       };
 
       response.json(data);
@@ -135,8 +114,7 @@ export class PageController {
   }
 
   verifyRequiredParams(request) {
-    request.assert('title', 'title field is required').notEmpty();
-    request.assert('key', 'key field is required').notEmpty();
+    request.assert('name', 'name field is required').notEmpty();
 
     var errors = request.validationErrors();
     if (errors) {
