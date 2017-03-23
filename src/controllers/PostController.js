@@ -39,7 +39,7 @@ export class PostController {
       });
   }
 
-  getAllPublished(request, response, next) {
+  getAllPublished(request, response) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
       include: [models.Category, models.Tag],
@@ -66,7 +66,6 @@ export class PostController {
         };
 
         response.json(data);
-        next();
       });
   }
 
