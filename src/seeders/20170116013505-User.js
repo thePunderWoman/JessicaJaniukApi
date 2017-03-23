@@ -1,5 +1,5 @@
 'use strict';
-import passwordHelper from '../helpers/PasswordHelper';
+import PasswordHelper from '../helpers/PasswordHelper';
 
 module.exports = {
   up: function (queryInterface) {
@@ -8,7 +8,7 @@ module.exports = {
       lastName: 'Janiuk',
       email: 'jessica.janiuk@gmail.com',
       username: 'jessica',
-      password: passwordHelper.cryptPassword('1amajedI!'),
+      password: PasswordHelper.cryptPassword('1amajedI!'),
       isAdmin: true,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -1,5 +1,5 @@
 import models from '../models/index';
-import passwordHelper from '../helpers/PasswordHelper';
+import PasswordHelper from '../helpers/PasswordHelper';
 import jwt from 'jsonwebtoken';
 import sharedSecret from '../config/secret';
 
@@ -16,7 +16,7 @@ export class AuthController {
         error: true,
         message: 'Authentication failed',
       };
-      if (user && passwordHelper.comparePassword(request.body.password, user.password)) {
+      if (user && PasswordHelper.comparePassword(request.body.password, user.password)) {
         var userResponse = { 
           firstName: user.firstName,
           lastName: user.lastName,

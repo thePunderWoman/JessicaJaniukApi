@@ -1,6 +1,6 @@
 import util from 'util';
 import models from '../models/index';
-import passwordHelper from '../helpers/passwordHelper';
+import PasswordHelper from '../helpers/PasswordHelper';
 
 function verifyRequiredParams(request) {
   request.assert('firstName', 'First Name is required').notEmpty();
@@ -122,7 +122,7 @@ export class UserController {
     }).then((user) => {
       if (user) {
         user.updateAttributes({
-          password: passwordHelper.cryptPassword(request.body['password']),
+          password: PasswordHelper.cryptPassword(request.body['password']),
         }).then((user) => {
           var data = {
             error: 'false',
