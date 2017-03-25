@@ -21,11 +21,14 @@ This API project is using express and node.js.
 - [x] Add Post Categories
 - [x] Add Post Tags
 - [ ] Add post key field
+- [ ] Add getPostByKey endpoint
+- [ ] Add open graph meta fields
 - [ ] Add indexes
+- [ ] Add getPostsByCategory endpoint
+- [ ] Add comment table
+- [ ] Add comment endpoints
 - [ ] Backfill old data
 - [ ] Add blog search endpoints
 - [ ] Add blog calendar endpoints
 - [ ] Add blog history endpoints
-- [ ] Add comment table
-- [ ] Add comment endpoints
-- [ ] Merge into angular universal app
+- [ ] Backfill tests
