@@ -69,6 +69,44 @@ export class PostController {
       });
   }
 
+  getAllPublishedByCategory(request, response) {
+    let page = request.query.page || 1;
+    models.Post.findAndCountAll({
+      where: {
+        'published': true,
+        'publishDate': {
+          $lte: new Date() 
+        },
+      },
+      include: [
+        {
+          model: models.Category,
+          where: {
+            'name': { $iLike: request.params.name }
+          }
+        },
+        models.Tag
+      ],
+      order: [
+        ['publishDate', 'DESC']
+      ],
+      limit: 10,
+      offset: (page - 1) * 10
+    })
+      .then((posts) => {
+        var data = {
+          error: 'false',
+          data: {
+            posts: posts.rows,
+            page: page,
+            count: posts.count
+          }
+        };
+
+        response.json(data);
+      });
+  }
+
   getById(request, response, next) {
     models.Post.find({
       include: [models.Category, models.Tag],
