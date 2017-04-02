@@ -86,6 +86,30 @@ export class PostController {
     });
   }
 
+  getByKeyAndDate(request, response, next) {
+    let date = new Date(request.params.year, request.params.month - 1, request.params.day);
+    let maxDate = new Date(request.params.year, request.params.month - 1, request.params.day);
+    maxDate.setDate(date.getDate() + 1);
+    models.Post.find({
+      include: [models.Category, models.Tag],
+      where: {
+        'key': request.params.key,
+        'publishDate': {
+          $gte: date,
+          $lt: maxDate
+        }
+      }
+    }).then((post) => {
+      var data = {
+        error: 'false',
+        data: post
+      };
+
+      response.json(data);
+      next();
+    });
+  }
+
   add(request, response, next) {
     if (!this.verifyRequiredParams(request)) {
       response.json(422, this.error_messages);
@@ -94,6 +118,7 @@ export class PostController {
 
     models.Post.create({
       title: request.body['title'],
+      key: this.createKey(request.body['title']),
       content: request.body['content'],
       published: request.body['published'],
       publishDate: request.body['publishDate'],
@@ -125,6 +150,7 @@ export class PostController {
 
         post.updateAttributes({
           title: request.body['title'],
+          key: this.createKey(request.body['title']),
           content: request.body['content'],
           published: request.body['published'],
           publishDate: request.body['publishDate'],
@@ -214,5 +240,17 @@ export class PostController {
         });
         return models.PostTag.bulkCreate(postTags);
       });
+  }
+
+  createKey(title) {
+    title = title.trim().toLowerCase();
+    title = title.replace(/((?!([a-z0-9])).)/gi, '-').replace(/[-]+/g,'-');
+    if (title.slice(title.length - 1, title.length) === '-') {
+      title = title.slice(0, -1);
+    }
+    if (title.length > 100) {
+      title.slice(0, 100);
+    }
+    return title;
   }
 }

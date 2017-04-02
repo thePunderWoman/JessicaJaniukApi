@@ -20,6 +20,7 @@ let connectionController = new ConnectionController();
 router.get('/post', postController.getAll);
 router.get('/post/published', postController.getAllPublished);
 router.get('/post/:id', postController.getById);
+router.get('/post/:year/:month/:day/:key', postController.getByKeyAndDate);
 router.post('/post', jwt({secret: sharedSecret}), postController.add);
 router.put('/post/:id', jwt({secret: sharedSecret}), postController.update);
 router.delete('/post/:id', jwt({secret: sharedSecret}), postController.delete);
