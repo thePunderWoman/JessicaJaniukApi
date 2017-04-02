@@ -20,11 +20,11 @@ This API project is using express and node.js.
 - [x] Add pagination
 - [x] Add Post Categories
 - [x] Add Post Tags
-- [ ] Add post key field
-- [ ] Add getPostByKey endpoint
+- [x] Add post key field
+- [x] Add getPostByKey endpoint
+- [x] Add getPostsByCategory endpoint
+- [x] Add indexes
 - [ ] Add open graph meta fields
-- [ ] Add indexes
-- [ ] Add getPostsByCategory endpoint
 - [ ] Add comment table
 - [ ] Add comment endpoints
 - [ ] Backfill old data

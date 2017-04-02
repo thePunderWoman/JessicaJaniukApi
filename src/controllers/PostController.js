@@ -69,11 +69,73 @@ export class PostController {
       });
   }
 
+  getAllPublishedByCategory(request, response) {
+    let page = request.query.page || 1;
+    models.Post.findAndCountAll({
+      where: {
+        'published': true,
+        'publishDate': {
+          $lte: new Date() 
+        },
+      },
+      include: [
+        {
+          model: models.Category,
+          where: {
+            'name': { $iLike: request.params.name }
+          }
+        },
+        models.Tag
+      ],
+      order: [
+        ['publishDate', 'DESC']
+      ],
+      limit: 10,
+      offset: (page - 1) * 10
+    })
+      .then((posts) => {
+        var data = {
+          error: 'false',
+          data: {
+            posts: posts.rows,
+            page: page,
+            count: posts.count
+          }
+        };
+
+        response.json(data);
+      });
+  }
+
   getById(request, response, next) {
     models.Post.find({
       include: [models.Category, models.Tag],
       where: {
         'id': request.params.id
+      }
+    }).then((post) => {
+      var data = {
+        error: 'false',
+        data: post
+      };
+
+      response.json(data);
+      next();
+    });
+  }
+
+  getByKeyAndDate(request, response, next) {
+    let date = new Date(request.params.year, request.params.month - 1, request.params.day);
+    let maxDate = new Date(request.params.year, request.params.month - 1, request.params.day);
+    maxDate.setDate(date.getDate() + 1);
+    models.Post.find({
+      include: [models.Category, models.Tag],
+      where: {
+        'key': request.params.key,
+        'publishDate': {
+          $gte: date,
+          $lt: maxDate
+        }
       }
     }).then((post) => {
       var data = {
@@ -94,6 +156,7 @@ export class PostController {
 
     models.Post.create({
       title: request.body['title'],
+      key: this.createKey(request.body['title']),
       content: request.body['content'],
       published: request.body['published'],
       publishDate: request.body['publishDate'],
@@ -125,6 +188,7 @@ export class PostController {
 
         post.updateAttributes({
           title: request.body['title'],
+          key: this.createKey(request.body['title']),
           content: request.body['content'],
           published: request.body['published'],
           publishDate: request.body['publishDate'],
@@ -214,5 +278,17 @@ export class PostController {
         });
         return models.PostTag.bulkCreate(postTags);
       });
+  }
+
+  createKey(title) {
+    title = title.trim().toLowerCase();
+    title = title.replace(/((?!([a-z0-9])).)/gi, '-').replace(/[-]+/g,'-');
+    if (title.slice(title.length - 1, title.length) === '-') {
+      title = title.slice(0, -1);
+    }
+    if (title.length > 100) {
+      title.slice(0, 100);
+    }
+    return title;
   }
 }
