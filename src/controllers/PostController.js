@@ -17,13 +17,14 @@ export class PostController {
 
   getAll(request, response, next) {
     let page = request.query.page || 1;
+    let perPage = request.query.perPage || 10;
     models.Post.findAndCountAll({
       include: [models.Category, models.Tag, models.Meta],
       order: [
         ['publishDate', 'DESC']
       ],
-      limit: 10,
-      offset: (page - 1) * 10
+      limit: perPage,
+      offset: (page - 1) * perPage
     })
       .then((posts) => {
         var data = {
@@ -42,6 +43,7 @@ export class PostController {
 
   getAllPublished(request, response) {
     let page = request.query.page || 1;
+    let perPage = request.query.perPage || 10;
     models.Post.findAndCountAll({
       include: [models.Category, models.Tag, models.Meta],
       where: {
@@ -53,8 +55,8 @@ export class PostController {
       order: [
         ['publishDate', 'DESC']
       ],
-      limit: 10,
-      offset: (page - 1) * 10
+      limit: perPage,
+      offset: (page - 1) * perPage
     })
       .then((posts) => {
         var data = {
@@ -72,6 +74,7 @@ export class PostController {
 
   getAllPublishedByCategory(request, response) {
     let page = request.query.page || 1;
+    let perPage = request.query.perPage || 10;
     models.Post.findAndCountAll({
       where: {
         'published': true,
@@ -92,8 +95,8 @@ export class PostController {
       order: [
         ['publishDate', 'DESC']
       ],
-      limit: 10,
-      offset: (page - 1) * 10
+      limit: perPage,
+      offset: (page - 1) * perPage
     })
       .then((posts) => {
         var data = {
