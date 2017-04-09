@@ -189,7 +189,6 @@ export class PostController {
       }
     }).then((post) => {
       if (post) {
-
         post.updateAttributes({
           title: request.body['title'],
           key: this.createKey(request.body['title']),
@@ -197,16 +196,21 @@ export class PostController {
           published: request.body['published'],
           publishDate: request.body['publishDate'],
           categoryId: request.body['categoryId'],
-        })
-        .then((post) => {
-          this.addTagsToPost(request.body['tags'], post.id);
-          this.addMetaToPost(request.body['meta'], post.id);
-        })
-        .finally((post) => {
+        }).then(() => {
+          return this.addTagsToPost(request.body['tags'], request.params.id);
+        }).then(() => {
+          return this.addMetaToPost(request.body['meta'], request.params.id);
+        }).then(() => {
+          return models.Post.find({
+            where: {
+              'id': request.params.id
+            }
+          });
+        }).then((updatedPost) => {
           var data = {
             error: 'false',
             message: 'Updated post successfully',
-            data: post
+            data: updatedPost
           };
 
           response.json(data);

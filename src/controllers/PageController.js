@@ -108,12 +108,19 @@ export class PageController {
           title: request.body['title'],
           content: request.body['content'],
           key: request.body['key'],
-        }).then((page) => {
-          this.addMetaToPage(request.body['meta'], page.id);
+        }).then(() => {
+          return this.addMetaToPage(request.body['meta'], page.id);
+        }).then(() => {
+          return models.Page.find({
+            where: {
+              'id': request.params.id
+            }
+          });
+        }).then((updatedPage) => {
           var data = {
             error: 'false',
             message: 'Updated page successfully',
-            data: page
+            data: updatedPage
           };
 
           response.json(data);
