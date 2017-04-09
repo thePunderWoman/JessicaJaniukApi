@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     key: DataTypes.STRING,
   }, {
     classMethods: {
-      associate: () => {
-        // associations can be defined here
+      associate: (models) => {
+        Page.hasMany(models.Meta, { foreignKey: 'pageId'});
       }
     }
   });

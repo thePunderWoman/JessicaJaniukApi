@@ -12,12 +12,13 @@ export class PostController {
     this.delete = this.delete.bind(this);
     this.verifyRequiredParams = this.verifyRequiredParams.bind(this);
     this.addTagsToPost = this.addTagsToPost.bind(this);
+    this.addMetaToPost = this.addMetaToPost.bind(this);
   }
 
   getAll(request, response, next) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category, models.Tag],
+      include: [models.Category, models.Tag, models.Meta],
       order: [
         ['publishDate', 'DESC']
       ],
@@ -42,7 +43,7 @@ export class PostController {
   getAllPublished(request, response) {
     let page = request.query.page || 1;
     models.Post.findAndCountAll({
-      include: [models.Category, models.Tag],
+      include: [models.Category, models.Tag, models.Meta],
       where: {
         'published': true,
         'publishDate': {
@@ -85,7 +86,8 @@ export class PostController {
             'name': { $iLike: request.params.name }
           }
         },
-        models.Tag
+        models.Tag,
+        models.Meta
       ],
       order: [
         ['publishDate', 'DESC']
@@ -109,7 +111,7 @@ export class PostController {
 
   getById(request, response, next) {
     models.Post.find({
-      include: [models.Category, models.Tag],
+      include: [models.Category, models.Tag, models.Meta],
       where: {
         'id': request.params.id
       }
@@ -129,7 +131,7 @@ export class PostController {
     let maxDate = new Date(request.params.year, request.params.month - 1, request.params.day);
     maxDate.setDate(date.getDate() + 1);
     models.Post.find({
-      include: [models.Category, models.Tag],
+      include: [models.Category, models.Tag, models.Meta],
       where: {
         'key': request.params.key,
         'publishDate': {
@@ -162,6 +164,8 @@ export class PostController {
       publishDate: request.body['publishDate'],
       categoryId: request.body['categoryId'],
     }).then((post) => {
+      this.addTagsToPost(request.body['tags'], post.id);
+      this.addMetaToPost(request.body['meta'], post.id);
       var data = {
         error: 'false',
         message: 'New post created successfully',
@@ -196,6 +200,7 @@ export class PostController {
         })
         .then((post) => {
           this.addTagsToPost(request.body['tags'], post.id);
+          this.addMetaToPost(request.body['meta'], post.id);
         })
         .finally((post) => {
           var data = {
@@ -277,6 +282,16 @@ export class PostController {
           return { TagId: tag.id, PostId: postId };
         });
         return models.PostTag.bulkCreate(postTags);
+      });
+  }
+
+  addMetaToPost(metatags, postId) {
+    models.Meta.destroy({ where: { postId: postId } })
+      .then(() => {
+        let newTags = metatags.map((tag) => {
+          return { postId: postId, tag: tag.tag, value: tag.value };
+        });
+        return models.Meta.bulkCreate(newTags);
       });
   }
 
