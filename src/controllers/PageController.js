@@ -11,11 +11,13 @@ export class PageController {
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
     this.verifyRequiredParams = this.verifyRequiredParams.bind(this);
+    this.addMetaToPage = this.addMetaToPage.bind(this);
   }
 
   getAll(request, response, next) {
     let page = request.params.page || 1;
     models.Page.findAll({
+      include: [models.Meta],
       order: [
         ['title', 'ASC']
       ],
@@ -35,6 +37,7 @@ export class PageController {
 
   getById(request, response, next) {
     models.Page.find({
+      include: [models.Meta],
       where: {
         'id': request.params.id
       }
@@ -51,6 +54,7 @@ export class PageController {
 
   getByKey(request, response, next) {
     models.Page.find({
+      include: [models.Meta],
       where: {
         'key': request.params.key
       }
@@ -76,6 +80,7 @@ export class PageController {
       content: request.body['content'],
       key: request.body['key'],
     }).then((page) => {
+      this.addMetaToPage(request.body['meta'], page.id);
       var data = {
         error: 'false',
         message: 'New page created successfully',
@@ -104,6 +109,7 @@ export class PageController {
           content: request.body['content'],
           key: request.body['key'],
         }).then((page) => {
+          this.addMetaToPage(request.body['meta'], page.id);
           var data = {
             error: 'false',
             message: 'Updated page successfully',
@@ -132,6 +138,16 @@ export class PageController {
       response.json(data);
       next();
     });
+  }
+
+  addMetaToPage(metatags, pageId) {
+    models.Meta.destroy({ where: { pageId: pageId } })
+      .then(() => {
+        let newTags = metatags.map((tag) => {
+          return { pageId: pageId, tag: tag.tag, value: tag.value };
+        });
+        return models.Meta.bulkCreate(newTags);
+      });
   }
 
   verifyRequiredParams(request) {
