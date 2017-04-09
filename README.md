@@ -24,7 +24,7 @@ This API project is using express and node.js.
 - [x] Add getPostByKey endpoint
 - [x] Add getPostsByCategory endpoint
 - [x] Add indexes
-- [ ] Add open graph meta fields
+- [x] Add open graph meta fields
 - [ ] Add comment table
 - [ ] Add comment endpoints
 - [ ] Backfill old data
