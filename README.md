@@ -25,10 +25,10 @@ This API project is using express and node.js.
 - [x] Add getPostsByCategory endpoint
 - [x] Add indexes
 - [x] Add open graph meta fields
-- [ ] Add comment table
-- [ ] Add comment endpoints
-- [ ] Backfill old data
-- [ ] Add blog search endpoints
+- [x] Backfill old data
 - [ ] Add blog calendar endpoints
 - [ ] Add blog history endpoints
+- [ ] Add blog search endpoints
+- [ ] Add comment table
+- [ ] Add comment endpoints
 - [ ] Backfill tests
