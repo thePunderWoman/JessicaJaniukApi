@@ -33,8 +33,7 @@ export class AuthController {
           error: false,
           message: 'Authentication Successful',
           token: token,
-          expires: expires,
-          user: userResponse
+          expires: expires
         };
       }
       response.status(200).json(data);
