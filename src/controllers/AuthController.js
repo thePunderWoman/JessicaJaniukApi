@@ -1,7 +1,7 @@
-import models from '../models/index';
-import PasswordHelper from '../helpers/PasswordHelper';
+import {User} from '../models/user.js';
+import PasswordHelper from '../helpers/PasswordHelper.js';
 import jwt from 'jsonwebtoken';
-import sharedSecret from '../config/secret';
+import sharedSecret from '../config/secret.js';
 
 export class AuthController {
   constructor() {
@@ -9,7 +9,7 @@ export class AuthController {
   }
   
   login(request, response, next) {
-    models.User.find({
+    User.find({
       where: {
         'username': request.body.username
       }

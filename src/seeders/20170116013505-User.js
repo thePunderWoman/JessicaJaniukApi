@@ -1,5 +1,4 @@
-'use strict';
-import PasswordHelper from '../helpers/PasswordHelper';
+import PasswordHelper from '../helpers/PasswordHelper.js';
 
 module.exports = {
   up: function (queryInterface) {

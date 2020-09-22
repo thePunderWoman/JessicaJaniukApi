@@ -1,5 +1,5 @@
 import util from 'util';
-import models from '../models/index';
+import {Tag} from '../models/tag.js';
 
 export class TagController {
   constructor() {
@@ -14,7 +14,7 @@ export class TagController {
 
   getAll(request, response, next) {
     let page = request.params.page || 1;
-    models.Tag.findAll({
+    Tag.findAll({
       order: [
         ['name', 'ASC']
       ],
@@ -33,7 +33,7 @@ export class TagController {
   }
 
   getById(request, response, next) {
-    models.Tag.find({
+    Tag.find({
       where: {
         'id': request.params.id
       }
@@ -54,7 +54,7 @@ export class TagController {
       return;
     }
 
-    models.Tag.create({
+    Tag.create({
       name: request.body['name'].toLowerCase(),
     }).then((tag) => {
       var data = {
@@ -74,7 +74,7 @@ export class TagController {
       return;
     }
 
-    models.Tag.find({
+    Tag.find({
       where: {
         'id': request.params.id
       }
@@ -97,7 +97,7 @@ export class TagController {
   }
 
   delete(request, response, next) {
-    models.Tag.destroy({
+    Tag.destroy({
       where: {
         id: request.params['id']
       }

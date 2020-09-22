@@ -1,16 +1,22 @@
-'use strict';
+import Sequelize from 'sequelize';
+import { sequelize } from './index.js';
 
-module.exports = function(sequelize, DataTypes) {
-  var Category = sequelize.define('Category', {
-    name: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here 
-        Category.hasMany(models.Post, { foreignKey: 'categoryId'});
-      }
-    }
-  });
+const { DataTypes, Model } = Sequelize;
 
-  return Category;
-};
+export class Category extends Model {}
+
+Category.init({
+  // Model attributes are defined here
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: DataTypes.STRING
+    // allowNull defaults to true
+  }
+}, {
+  // Other model options go here
+  sequelize, // We need to pass the connection instance
+  modelName: 'Category' // We need to choose the model name
+});
