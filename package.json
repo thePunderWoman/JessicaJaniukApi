@@ -10,7 +10,7 @@
     "dev": "nodemon -w src/index.mjs --exec",
     "migrate": "./node_modules/.bin/sequelize db:migrate --config src/config/config.json --migrations-path src/migrations",
     "migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo --config src/config/config.json --migrations-path src/migrations",
-    "start": "npm run migrate && node src/index.mjs",
+    "start": "node src/index.mjs",
     "test": "mocha 'src/**/*.spec.js' && eslint . --ext .js"
   },
   "engines": {
