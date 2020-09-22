@@ -1,21 +1,15 @@
-import Sequelize from 'sequelize';
-import { sequelize } from './index.js';
+'use strict';
 
-const { DataTypes, Model } = Sequelize;
+module.exports = function(sequelize, DataTypes) {
+  var PostTag = sequelize.define('PostTag', {
+    PostId: DataTypes.INTEGER,
+    TagId: DataTypes.INTEGER
+  }, {
+    classMethods: {
+      associate: function() {
+      }
+    }
+  });
 
-export class PostTag extends Model {}
-
-PostTag.init({
-  // Model attributes are defined here
-  PostId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  TagId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-},{
-  sequelize, // We need to pass the connection instance
-  modelName: 'PostTag' // We need to choose the model name
-});
+  return PostTag;
+};

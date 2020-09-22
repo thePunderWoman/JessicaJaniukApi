@@ -1,6 +1,5 @@
 import util from 'util';
-import {Page} from '../models/page.js';
-import {Meta} from '../models/meta.js';
+import models from '../models/index';
 
 export class PageController {
   constructor() {
@@ -17,8 +16,8 @@ export class PageController {
 
   getAll(request, response, next) {
     let page = request.params.page || 1;
-    Page.findAll({
-      include: [Meta],
+    models.Page.findAll({
+      include: [models.Meta],
       order: [
         ['title', 'ASC']
       ],
@@ -37,8 +36,8 @@ export class PageController {
   }
 
   getById(request, response, next) {
-    Page.find({
-      include: [Meta],
+    models.Page.find({
+      include: [models.Meta],
       where: {
         'id': request.params.id
       }
@@ -54,8 +53,8 @@ export class PageController {
   }
 
   getByKey(request, response, next) {
-    Page.find({
-      include: [Meta],
+    models.Page.find({
+      include: [models.Meta],
       where: {
         'key': request.params.key
       }
@@ -76,7 +75,7 @@ export class PageController {
       return;
     }
 
-    Page.create({
+    models.Page.create({
       title: request.body['title'],
       content: request.body['content'],
       key: request.body['key'],
@@ -99,7 +98,7 @@ export class PageController {
       return;
     }
 
-    Page.find({
+    models.Page.find({
       where: {
         'id': request.params.id
       }
@@ -112,7 +111,7 @@ export class PageController {
         }).then(() => {
           return this.addMetaToPage(request.body['meta'], page.id);
         }).then(() => {
-          return Page.find({
+          return models.Page.find({
             where: {
               'id': request.params.id
             }
@@ -132,7 +131,7 @@ export class PageController {
   }
 
   delete(request, response, next) {
-    Page.destroy({
+    models.Page.destroy({
       where: {
         id: request.params['id']
       }
@@ -149,12 +148,12 @@ export class PageController {
   }
 
   addMetaToPage(metatags, pageId) {
-    Meta.destroy({ where: { pageId: pageId } })
+    models.Meta.destroy({ where: { pageId: pageId } })
       .then(() => {
         let newTags = metatags.map((tag) => {
           return { pageId: pageId, tag: tag.tag, value: tag.value };
         });
-        return Meta.bulkCreate(newTags);
+        return models.Meta.bulkCreate(newTags);
       });
   }
 

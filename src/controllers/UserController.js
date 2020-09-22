@@ -1,6 +1,6 @@
 import util from 'util';
-import {User} from '../models/user.js';
-import PasswordHelper from '../helpers/PasswordHelper.js';
+import models from '../models/index';
+import PasswordHelper from '../helpers/PasswordHelper';
 
 export class UserController {
   constructor() {
@@ -15,7 +15,7 @@ export class UserController {
   }
 
   getAll(request, response, next) {
-    User.findAll({
+    models.User.findAll({
       attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
     })
       .then((users) => {
@@ -30,7 +30,7 @@ export class UserController {
   }
 
   getById(request, response, next) {
-    User.find({
+    models.User.find({
       attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'isAdmin'],
       where: {
         'id': request.params.id
@@ -52,7 +52,7 @@ export class UserController {
       return;
     }
 
-    User.create({
+    models.User.create({
       firstName: request.body['firstName'],
       lastName: request.body['lastName'],
       email: request.body['email'],
@@ -76,7 +76,7 @@ export class UserController {
       return;
     }
 
-    User.find({
+    models.User.find({
       where: {
         'id': request.params.id
       }
@@ -103,7 +103,7 @@ export class UserController {
   }
 
   setPassword(request, response, next) {
-    User.find({
+    models.User.find({
       where: {
         'id': request.params.id
       }
@@ -125,7 +125,7 @@ export class UserController {
   }
 
   delete(request, response, next) {
-    User.destroy({
+    models.User.destroy({
       where: {
         id: request.params['id']
       }
