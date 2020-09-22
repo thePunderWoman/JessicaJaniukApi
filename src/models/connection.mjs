@@ -1,37 +1,29 @@
 import Sequelize from 'sequelize';
-import { sequelize } from './index.js';
+import { sequelize } from './index.mjs';
 
 const { DataTypes, Model } = Sequelize;
 
-export class User extends Model {}
+export class Connection extends Model {}
 
-User.init({
+Connection.init({
   // Model attributes are defined here
-  firstName: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  lastName: {
+  url: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  email: {
+  linktext: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  username: {
+  icon: {
     type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  isAdmin: {
-    type: DataTypes.BOOLEAN,
     allowNull: false
   },
 },{
   sequelize, // We need to pass the connection instance
-  modelName: 'User' // We need to choose the model name
+  modelName: 'Connection' // We need to choose the model name
 });

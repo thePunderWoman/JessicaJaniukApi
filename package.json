@@ -2,15 +2,15 @@
   "name": "jessica-janiuk-api",
   "version": "0.0.2",
   "description": "Jessica Janiuk's personal website API",
-  "main": "src",
+  "main": "src/index.mjs",
   "env": "development",
-  "type": "module",
   "repository": "https://github.com/janiukjf/JessicaJaniukApi",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -w src --exec",
+    "dev": "nodemon -w src/index.mjs --exec",
     "migrate": "./node_modules/.bin/sequelize db:migrate --config src/config/config.json --migrations-path src/migrations",
-    "start": "npm run migrate && node src",
+    "migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo --config src/config/config.json --migrations-path src/migrations",
+    "start": "npm run migrate && node src/index.mjs",
     "test": "mocha 'src/**/*.spec.js' && eslint . --ext .js"
   },
   "engines": {

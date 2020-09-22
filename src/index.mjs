@@ -3,10 +3,14 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import expressValidator from 'express-validator';
-import {sequelize} from './models/index.js';
+import {sequelize} from './models/index.mjs';
 import debug from 'debug';
-import router from './config/routes.js';
-import {config as cfg} from './config/config.js';
+import router from './config/routes.mjs';
+import fs from 'fs';
+import path from 'path';
+
+const config = fs.readFileSync(`${path.resolve()}/src/config/config.json`);
+const cfg = JSON.parse(config);
 
 let app = express();
 app.server = http.createServer(app);

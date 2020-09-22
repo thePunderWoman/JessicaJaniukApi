@@ -1,5 +1,9 @@
 import Sequelize from 'sequelize';
-import {config as cfg} from '../config/config.js';
+import fs from 'fs';
+import path from 'path';
+
+const configJSON = fs.readFileSync(`${path.resolve()}/src/config/config.json`);
+const cfg = JSON.parse(configJSON);
 
 let env       = process.env.NODE_ENV || 'development';
 let config    = cfg[env];

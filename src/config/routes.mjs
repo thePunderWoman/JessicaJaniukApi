@@ -1,12 +1,12 @@
 import express from 'express';
-import { PostController } from '../controllers/PostController.js';
-import { ConnectionController } from '../controllers/ConnectionController.js';
-import { PageController } from '../controllers/PageController.js';
-import { UserController } from '../controllers/UserController.js';
-import { CategoryController } from '../controllers/CategoryController.js';
-import { AuthController } from '../controllers/AuthController.js';
+import { PostController } from '../controllers/PostController.mjs';
+import { ConnectionController } from '../controllers/ConnectionController.mjs';
+import { PageController } from '../controllers/PageController.mjs';
+import { UserController } from '../controllers/UserController.mjs';
+import { CategoryController } from '../controllers/CategoryController.mjs';
+import { AuthController } from '../controllers/AuthController.mjs';
 import jwt from 'express-jwt';
-import sharedSecret from '../config/secret.js';
+import sharedSecret from '../config/secret.mjs';
 
 let router = new express.Router();
 let postController = new PostController();

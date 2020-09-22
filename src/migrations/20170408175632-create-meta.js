@@ -11,14 +11,14 @@ module.exports = {
       postId: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: 'Posts',
-        referenceKey: 'id'
+        model: 'Posts',
+        key: 'id'
       },
       pageId: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: 'Pages',
-        referenceKey: 'id'
+        model: 'Pages',
+        key: 'id'
       },
       tag: {
         type: Sequelize.STRING

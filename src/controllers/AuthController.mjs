@@ -1,7 +1,7 @@
-import {User} from '../models/user.js';
-import PasswordHelper from '../helpers/PasswordHelper.js';
+import {User} from '../models/user.mjs';
+import PasswordHelper from '../helpers/PasswordHelper.mjs';
 import jwt from 'jsonwebtoken';
-import sharedSecret from '../config/secret.js';
+import sharedSecret from '../config/secret.mjs';
 
 export class AuthController {
   constructor() {

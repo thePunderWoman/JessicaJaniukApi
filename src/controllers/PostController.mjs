@@ -1,9 +1,9 @@
 import util from 'util';
-import {Post} from '../models/post.js';
-import {PostTag} from '../models/postTag.js';
-import {Category} from '../models/category.js';
-import {Tag} from '../models/tag.js';
-import {Meta} from '../models/meta.js';
+import {Post} from '../models/post.mjs';
+import {PostTag} from '../models/postTag.mjs';
+import {Category} from '../models/category.mjs';
+import {Tag} from '../models/tag.mjs';
+import {Meta} from '../models/meta.mjs';
 
 export class PostController {
   constructor() {

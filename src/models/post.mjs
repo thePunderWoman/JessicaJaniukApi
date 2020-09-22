@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize';
-import { Meta } from './meta.js';
-import { sequelize } from './index.js';
-import { Category } from './category.js';
-import { Tag } from './tag.js';
-import { PostTag } from './postTag.js';
+import { Meta } from './meta.mjs';
+import { sequelize } from './index.mjs';
+import { Category } from './category.mjs';
+import { Tag } from './tag.mjs';
+import { PostTag } from './postTag.mjs';
 
 const { DataTypes, Model } = Sequelize;
 

@@ -1,5 +1,5 @@
 import util from 'util';
-import {Connection} from '../models/connection.js';
+import {Connection} from '../models/connection.mjs';
 
 export class ConnectionController {
   constructor() {

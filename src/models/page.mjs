@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
-import { Meta } from './meta.js';
-import { sequelize } from './index.js';
+import { Meta } from './meta.mjs';
+import { sequelize } from './index.mjs';
 
 const { DataTypes, Model } = Sequelize;
 

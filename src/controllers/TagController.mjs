@@ -1,9 +1,7 @@
 import util from 'util';
-import {Category} from '../models/category.js';
-import {Post} from '../models/post.js';
-import sequelize from 'sequelize';
+import {Tag} from '../models/tag.mjs';
 
-export class CategoryController {
+export class TagController {
   constructor() {
     this.error_messages = null;
     this.getAll = this.getAll.bind(this);
@@ -15,21 +13,18 @@ export class CategoryController {
   }
 
   getAll(request, response, next) {
-    Category.findAll({
-      attributes: ['id','name','createdAt','updatedAt', [sequelize.fn('COUNT', sequelize.col('Posts.id')), 'postCount']],
-      group: ['Category.id', 'Posts.id'],
-      include: [{
-        model: Post,
-        attributes: []
-      }],
+    let page = request.params.page || 1;
+    Tag.findAll({
       order: [
         ['name', 'ASC']
       ],
+      limit: 10,
+      offset: (page - 1) * 10
     })
-      .then((categories) => {
+      .then((tag) => {
         var data = {
           error: 'false',
-          data: categories
+          data: tag
         };
 
         response.json(data);
@@ -38,14 +33,14 @@ export class CategoryController {
   }
 
   getById(request, response, next) {
-    Category.find({
+    Tag.find({
       where: {
         'id': request.params.id
       }
-    }).then((category) => {
+    }).then((tag) => {
       var data = {
         error: 'false',
-        data: category
+        data: tag
       };
 
       response.json(data);
@@ -59,13 +54,13 @@ export class CategoryController {
       return;
     }
 
-    Category.create({
-      name: request.body['name'].trim(),
-    }).then((category) => {
+    Tag.create({
+      name: request.body['name'].toLowerCase(),
+    }).then((tag) => {
       var data = {
         error: 'false',
-        message: 'New category created successfully',
-        data: category
+        message: 'New tag created successfully',
+        data: tag
       };
 
       response.json(data);
@@ -79,19 +74,19 @@ export class CategoryController {
       return;
     }
 
-    Category.find({
+    Tag.find({
       where: {
         'id': request.params.id
       }
-    }).then((category) => {
-      if (category) {
-        category.updateAttributes({
-          name: request.body['name'].trim(),
-        }).then((category) => {
+    }).then((tag) => {
+      if (tag) {
+        tag.updateAttributes({
+          name: request.body['name'],
+        }).then((tag) => {
           var data = {
             error: 'false',
-            message: 'Updated category successfully',
-            data: category
+            message: 'Updated tag successfully',
+            data: tag
           };
 
           response.json(data);
@@ -102,15 +97,15 @@ export class CategoryController {
   }
 
   delete(request, response, next) {
-    Category.destroy({
+    Tag.destroy({
       where: {
         id: request.params['id']
       }
-    }).then((category) => {
+    }).then((tag) => {
       var data = {
         error: 'false',
-        message: 'Deleted category successfully',
-        data: category
+        message: 'Deleted tag successfully',
+        data: tag
       };
 
       response.json(data);

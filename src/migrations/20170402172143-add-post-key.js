@@ -2,10 +2,10 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.addColumn('Posts','key',{ type: Sequelize.STRING, allowNull: false, defaultValue: '' } );
+    return queryInterface.addColumn('Posts','key',{ type: Sequelize.STRING, allowNull: false, defaultValue: '' } );
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeColumn('Posts', 'key');
+    return queryInterface.removeColumn('Posts', 'key');
   }
 };

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.addIndex(
+    return queryInterface.addIndex(
       'Categories',
       ['name'],
       {
@@ -12,6 +12,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeIndex('CategoryNameIndex');
+    return queryInterface.removeIndex('CategoryNameIndex');
   }
 };

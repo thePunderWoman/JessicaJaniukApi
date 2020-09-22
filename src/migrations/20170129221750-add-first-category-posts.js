@@ -12,18 +12,19 @@ module.exports = {
         'name': 'Personal'
       }
     })
-    .then((categories) => {
-      queryInterface.sequelize.query('UPDATE "Posts" SET "categoryId" = ' + categories[0].id);
-      queryInterface.changeColumn(
-        'Posts',
-        'categoryId',
-        {
-          type: Sequelize.INTEGER,
-          references: 'Categories',
-          referenceKey: 'id',
-        }
-      );
-    });
+      .then((categories) => {
+        queryInterface.sequelize.query('UPDATE "Posts" SET "categoryId" = ' + categories[0].id);
+        queryInterface.changeColumn(
+          'Posts',
+          'categoryId',
+          {
+            type: Sequelize.INTEGER,
+            references: 'Categories',
+            referenceKey: 'id',
+          }
+        );
+      });
+    return Promise.resolve();
   },
 
   down: function (queryInterface, Sequelize) {

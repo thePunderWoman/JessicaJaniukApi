@@ -1,6 +1,6 @@
 import util from 'util';
-import {Page} from '../models/page.js';
-import {Meta} from '../models/meta.js';
+import {Page} from '../models/page.mjs';
+import {Meta} from '../models/meta.mjs';
 
 export class PageController {
   constructor() {

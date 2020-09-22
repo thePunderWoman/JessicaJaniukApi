@@ -9,9 +9,10 @@ module.exports = {
         indexName: 'PostKeyDateIndex'
       }
     );
+    return Promise.resolve();
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeIndex('PostKeyDateIndex');
+    return queryInterface.removeIndex('PostKeyDateIndex');
   }
 };
