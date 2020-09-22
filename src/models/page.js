@@ -1,15 +1,29 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  var Page = sequelize.define('Page', {
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT,
-    key: DataTypes.STRING,
-  }, {
-    classMethods: {
-      associate: (models) => {
-        Page.hasMany(models.Meta, { foreignKey: 'pageId'});
-      }
-    }
-  });
-  return Page;
-};
+import Sequelize from 'sequelize';
+import { Meta } from './meta.js';
+import { sequelize } from './index.js';
+
+const { DataTypes, Model } = Sequelize;
+
+export class Page extends Model {}
+
+Page.init({
+  // Model attributes are defined here
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  key: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+},{
+  sequelize, // We need to pass the connection instance
+  modelName: 'Page' // We need to choose the model name
+});
+
+Page.hasMany(Meta, { foreignKey: 'pageId'});
+Meta.belongsTo(Page, { foreignKey: 'id'});

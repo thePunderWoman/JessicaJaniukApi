@@ -1,5 +1,6 @@
 import util from 'util';
-import models from '../models/index';
+import {Category} from '../models/category.js';
+import {Post} from '../models/post.js';
 import sequelize from 'sequelize';
 
 export class CategoryController {
@@ -14,11 +15,11 @@ export class CategoryController {
   }
 
   getAll(request, response, next) {
-    models.Category.findAll({
+    Category.findAll({
       attributes: ['id','name','createdAt','updatedAt', [sequelize.fn('COUNT', sequelize.col('Posts.id')), 'postCount']],
       group: ['Category.id', 'Posts.id'],
       include: [{
-        model: models.Post,
+        model: Post,
         attributes: []
       }],
       order: [
@@ -37,7 +38,7 @@ export class CategoryController {
   }
 
   getById(request, response, next) {
-    models.Category.find({
+    Category.find({
       where: {
         'id': request.params.id
       }
@@ -58,7 +59,7 @@ export class CategoryController {
       return;
     }
 
-    models.Category.create({
+    Category.create({
       name: request.body['name'].trim(),
     }).then((category) => {
       var data = {
@@ -78,7 +79,7 @@ export class CategoryController {
       return;
     }
 
-    models.Category.find({
+    Category.find({
       where: {
         'id': request.params.id
       }
@@ -101,7 +102,7 @@ export class CategoryController {
   }
 
   delete(request, response, next) {
-    models.Category.destroy({
+    Category.destroy({
       where: {
         id: request.params['id']
       }

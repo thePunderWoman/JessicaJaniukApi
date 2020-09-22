@@ -1,5 +1,9 @@
 import util from 'util';
-import models from '../models/index';
+import {Post} from '../models/post.js';
+import {PostTag} from '../models/postTag.js';
+import {Category} from '../models/category.js';
+import {Tag} from '../models/tag.js';
+import {Meta} from '../models/meta.js';
 
 export class PostController {
   constructor() {
@@ -18,8 +22,8 @@ export class PostController {
   getAll(request, response, next) {
     let page = request.query.page || 1;
     let perPage = request.query.perPage || 10;
-    models.Post.findAndCountAll({
-      include: [models.Category, models.Tag, models.Meta],
+    Post.findAndCountAll({
+      include: [Category, Tag, Meta],
       order: [
         ['publishDate', 'DESC']
       ],
@@ -44,8 +48,8 @@ export class PostController {
   getAllPublished(request, response) {
     let page = request.query.page || 1;
     let perPage = request.query.perPage || 10;
-    models.Post.findAndCountAll({
-      include: [models.Category, models.Tag, models.Meta],
+    Post.findAndCountAll({
+      include: [Category, Tag, Meta],
       where: {
         'published': true,
         'publishDate': {
@@ -75,7 +79,7 @@ export class PostController {
   getAllPublishedByCategory(request, response) {
     let page = request.query.page || 1;
     let perPage = request.query.perPage || 10;
-    models.Post.findAndCountAll({
+    Post.findAndCountAll({
       where: {
         'published': true,
         'publishDate': {
@@ -84,13 +88,13 @@ export class PostController {
       },
       include: [
         {
-          model: models.Category,
+          model: Category,
           where: {
             'name': { $iLike: request.params.name }
           }
         },
-        models.Tag,
-        models.Meta
+        Tag,
+        Meta
       ],
       order: [
         ['publishDate', 'DESC']
@@ -113,8 +117,8 @@ export class PostController {
   }
 
   getById(request, response, next) {
-    models.Post.find({
-      include: [models.Category, models.Tag, models.Meta],
+    Post.find({
+      include: [Category, Tag, Meta],
       where: {
         'id': request.params.id
       }
@@ -133,8 +137,8 @@ export class PostController {
     let date = new Date(request.params.year, request.params.month - 1, request.params.day);
     let maxDate = new Date(request.params.year, request.params.month - 1, request.params.day);
     maxDate.setDate(date.getDate() + 1);
-    models.Post.find({
-      include: [models.Category, models.Tag, models.Meta],
+    Post.find({
+      include: [Category, Tag, Meta],
       where: {
         'key': request.params.key,
         'publishDate': {
@@ -159,7 +163,7 @@ export class PostController {
       return;
     }
 
-    models.Post.create({
+    Post.create({
       title: request.body['title'],
       key: this.createKey(request.body['title']),
       content: request.body['content'],
@@ -186,7 +190,7 @@ export class PostController {
       return;
     }
 
-    models.Post.find({
+    Post.find({
       where: {
         'id': request.params.id
       }
@@ -204,7 +208,7 @@ export class PostController {
         }).then(() => {
           return this.addMetaToPost(request.body['meta'], request.params.id);
         }).then(() => {
-          return models.Post.find({
+          return Post.find({
             where: {
               'id': request.params.id
             }
@@ -224,7 +228,7 @@ export class PostController {
   }
 
   delete(request, response, next) {
-    models.Post.destroy({
+    Post.destroy({
       where: {
         id: request.params['id']
       }
@@ -261,9 +265,9 @@ export class PostController {
 
   addTagsToPost(tagNames, postId) {
     tagNames.forEach(tag => tag.toLowerCase);
-    models.PostTag.destroy({ where: { PostId: postId } })
+    PostTag.destroy({ where: { PostId: postId } })
       .then(() => {
-        return models.Tag.findAll({
+        return Tag.findAll({
           where: {
             'name': {'$in': tagNames}
           }
@@ -277,9 +281,9 @@ export class PostController {
           return { name: tag };
         });
 
-        return models.Tag.bulkCreate(newTags);
+        return Tag.bulkCreate(newTags);
       }).then(() => {
-        return models.Tag.findAll({
+        return Tag.findAll({
           where: {
             'name': {'$in': tagNames}
           }
@@ -288,17 +292,17 @@ export class PostController {
         let postTags = tags.map((tag) => {
           return { TagId: tag.id, PostId: postId };
         });
-        return models.PostTag.bulkCreate(postTags);
+        return PostTag.bulkCreate(postTags);
       });
   }
 
   addMetaToPost(metatags, postId) {
-    models.Meta.destroy({ where: { postId: postId } })
+    Meta.destroy({ where: { postId: postId } })
       .then(() => {
         let newTags = metatags.map((tag) => {
           return { postId: postId, tag: tag.tag, value: tag.value };
         });
-        return models.Meta.bulkCreate(newTags);
+        return Meta.bulkCreate(newTags);
       });
   }
 
