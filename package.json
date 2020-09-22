@@ -35,7 +35,7 @@
     "jsonwebtoken": "^7.2.1",
     "pg": "^6.1.2",
     "resource-router-middleware": "^0.6.0",
-    "sequelize": "^3.29.0",
+    "sequelize": "^6.3.5",
     "sequelize-cli": "^2.5.1",
     "sequelize-heroku": "^1.0.0"
   },
