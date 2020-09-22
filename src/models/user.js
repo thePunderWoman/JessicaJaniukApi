@@ -1,37 +1,18 @@
-import Sequelize from 'sequelize';
-import { sequelize } from './index.js';
-
-const { DataTypes, Model } = Sequelize;
-
-export class User extends Model {}
-
-User.init({
-  // Model attributes are defined here
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  isAdmin: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
-},{
-  sequelize, // We need to pass the connection instance
-  modelName: 'User' // We need to choose the model name
-});
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  var User = sequelize.define('User', {
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    username: DataTypes.STRING,
+    password: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN,
+  }, {
+    classMethods: {
+      associate: () => {
+        // associations can be defined here
+      }
+    }
+  });
+  return User;
+};

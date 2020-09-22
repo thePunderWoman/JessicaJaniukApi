@@ -3,10 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import expressValidator from 'express-validator';
-import {sequelize} from './models/index.js';
+import models from './models';
 import debug from 'debug';
-import router from './config/routes.js';
-import {config as cfg} from './config/config.js';
+import router from './config/routes';
+let cfg = require('./config/config.json');
 
 let app = express();
 app.server = http.createServer(app);
@@ -30,7 +30,7 @@ app.use('/', router);
 let port = process.env.PORT || cfg.globals.port;
 
 // connect to db
-sequelize.sync().then(() => {
+models.sequelize.sync().then(() => {
   app.server.listen(port);
   app.server.on('error', onError);
   app.server.on('listening', onListening);
@@ -69,9 +69,11 @@ let onError = (error) => {
  */
 
 let onListening = () => {
-  const port = app.server.address().port;
-  debug(`Listening at http://localhost:${port}`);
+  let addr = app.server.address();
+  let bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
 };
-
 
 export default app;

@@ -1,5 +1,5 @@
 import util from 'util';
-import {Connection} from '../models/connection.js';
+import models from '../models/index';
 
 export class ConnectionController {
   constructor() {
@@ -13,7 +13,7 @@ export class ConnectionController {
   }
 
   getAll(request, response, next) {
-    Connection.findAll({
+    models.Connection.findAll({
       order: [
         ['name', 'ASC']
       ],
@@ -30,7 +30,7 @@ export class ConnectionController {
   }
 
   getById(request, response, next) {
-    Connection.find({
+    models.Connection.find({
       attributes: ['id', 'name', 'url', 'linktext', 'icon'],
       where: {
         'id': request.params.id
@@ -52,7 +52,7 @@ export class ConnectionController {
       return;
     }
 
-    Connection.create({
+    models.Connection.create({
       name: request.body['name'],
       url: request.body['url'],
       linktext: request.body['linktext'],
@@ -75,7 +75,7 @@ export class ConnectionController {
       return;
     }
 
-    Connection.find({
+    models.Connection.find({
       where: {
         'id': request.params.id
       }
@@ -101,7 +101,7 @@ export class ConnectionController {
   }
 
   delete(request, response, next) {
-    Connection.destroy({
+    models.Connection.destroy({
       where: {
         id: request.params['id']
       }
