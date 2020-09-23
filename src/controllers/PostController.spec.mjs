@@ -1,7 +1,6 @@
-var chai = require('chai');
-var expect = chai.expect;
-/*global describe*/
-/*global it*/
+import chai from 'chai';
+import 'mocha';
+let expect = chai.expect;
 
 describe('post controller', function() {
   it('should be true', function() {
