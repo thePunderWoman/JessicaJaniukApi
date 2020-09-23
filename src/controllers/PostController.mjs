@@ -54,7 +54,7 @@ export class PostController {
       where: {
         'published': true,
         'publishDate': {
-          $lte: new Date() 
+          [Sequelize.Op.lte]: new Date() 
         }
       },
       order: [
@@ -84,7 +84,7 @@ export class PostController {
       where: {
         'published': true,
         'publishDate': {
-          $lte: new Date() 
+          [Sequelize.Op.lte]: new Date() 
         },
       },
       include: [
@@ -143,8 +143,8 @@ export class PostController {
       where: {
         'key': request.params.key,
         'publishDate': {
-          $gte: date,
-          $lt: maxDate
+          [Sequelize.Op.gte]: date,
+          [Sequelize.Op.lt]: maxDate
         }
       }
     }).then((post) => {
@@ -270,7 +270,7 @@ export class PostController {
       .then(() => {
         return Tag.findAll({
           where: {
-            'name': {'$in': tagNames}
+            'name': {[Sequelize.Op.in]: tagNames}
           }
         });
       }).then((tags) => {
@@ -286,7 +286,7 @@ export class PostController {
       }).then(() => {
         return Tag.findAll({
           where: {
-            'name': {'$in': tagNames}
+            'name': {[Sequelize.Op.in]: tagNames}
           }
         });
       }).then((tags) => {
