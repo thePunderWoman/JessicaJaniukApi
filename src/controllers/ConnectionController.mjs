@@ -30,7 +30,7 @@ export class ConnectionController {
   }
 
   getById(request, response, next) {
-    Connection.find({
+    Connection.findOne({
       attributes: ['id', 'name', 'url', 'linktext', 'icon'],
       where: {
         'id': request.params.id
@@ -75,7 +75,7 @@ export class ConnectionController {
       return;
     }
 
-    Connection.find({
+    Connection.findOne({
       where: {
         'id': request.params.id
       }

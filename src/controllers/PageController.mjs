@@ -37,7 +37,7 @@ export class PageController {
   }
 
   getById(request, response, next) {
-    Page.find({
+    Page.findOne({
       include: [Meta],
       where: {
         'id': request.params.id
@@ -54,7 +54,7 @@ export class PageController {
   }
 
   getByKey(request, response, next) {
-    Page.find({
+    Page.findOne({
       include: [Meta],
       where: {
         'key': request.params.key
@@ -99,7 +99,7 @@ export class PageController {
       return;
     }
 
-    Page.find({
+    Page.findOne({
       where: {
         'id': request.params.id
       }
@@ -112,7 +112,7 @@ export class PageController {
         }).then(() => {
           return this.addMetaToPage(request.body['meta'], page.id);
         }).then(() => {
-          return Page.find({
+          return Page.findOne({
             where: {
               'id': request.params.id
             }

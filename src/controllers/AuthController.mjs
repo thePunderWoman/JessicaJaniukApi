@@ -9,7 +9,7 @@ export class AuthController {
   }
   
   login(request, response, next) {
-    User.find({
+    User.findOne({
       where: {
         'username': request.body.username
       }

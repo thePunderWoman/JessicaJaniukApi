@@ -38,7 +38,7 @@ export class CategoryController {
   }
 
   getById(request, response, next) {
-    Category.find({
+    Category.findOne({
       where: {
         'id': request.params.id
       }
@@ -79,7 +79,7 @@ export class CategoryController {
       return;
     }
 
-    Category.find({
+    Category.findOne({
       where: {
         'id': request.params.id
       }

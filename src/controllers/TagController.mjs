@@ -33,7 +33,7 @@ export class TagController {
   }
 
   getById(request, response, next) {
-    Tag.find({
+    Tag.findOne({
       where: {
         'id': request.params.id
       }
@@ -74,7 +74,7 @@ export class TagController {
       return;
     }
 
-    Tag.find({
+    Tag.findOne({
       where: {
         'id': request.params.id
       }

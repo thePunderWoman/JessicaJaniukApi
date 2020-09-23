@@ -4,6 +4,7 @@ import {PostTag} from '../models/postTag.mjs';
 import {Category} from '../models/category.mjs';
 import {Tag} from '../models/tag.mjs';
 import {Meta} from '../models/meta.mjs';
+import Sequelize from 'sequelize';
 
 export class PostController {
   constructor() {
@@ -90,7 +91,7 @@ export class PostController {
         {
           model: Category,
           where: {
-            'name': { $iLike: request.params.name }
+            'name': { [Sequelize.Op.iLike]: request.params.name }
           }
         },
         Tag,
@@ -117,13 +118,13 @@ export class PostController {
   }
 
   getById(request, response, next) {
-    Post.find({
+    Post.findOne({
       include: [Category, Tag, Meta],
       where: {
         'id': request.params.id
       }
     }).then((post) => {
-      var data = {
+      let data = {
         error: 'false',
         data: post
       };
@@ -137,7 +138,7 @@ export class PostController {
     let date = new Date(request.params.year, request.params.month - 1, request.params.day);
     let maxDate = new Date(request.params.year, request.params.month - 1, request.params.day);
     maxDate.setDate(date.getDate() + 1);
-    Post.find({
+    Post.findOne({
       include: [Category, Tag, Meta],
       where: {
         'key': request.params.key,
@@ -190,7 +191,7 @@ export class PostController {
       return;
     }
 
-    Post.find({
+    Post.findOne({
       where: {
         'id': request.params.id
       }
@@ -208,7 +209,7 @@ export class PostController {
         }).then(() => {
           return this.addMetaToPost(request.body['meta'], request.params.id);
         }).then(() => {
-          return Post.find({
+          return Post.findOne({
             where: {
               'id': request.params.id
             }

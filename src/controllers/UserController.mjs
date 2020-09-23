@@ -30,7 +30,7 @@ export class UserController {
   }
 
   getById(request, response, next) {
-    User.find({
+    User.findOne({
       attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'isAdmin'],
       where: {
         'id': request.params.id
@@ -76,7 +76,7 @@ export class UserController {
       return;
     }
 
-    User.find({
+    User.findOne({
       where: {
         'id': request.params.id
       }
@@ -103,7 +103,7 @@ export class UserController {
   }
 
   setPassword(request, response, next) {
-    User.find({
+    User.findOne({
       where: {
         'id': request.params.id
       }

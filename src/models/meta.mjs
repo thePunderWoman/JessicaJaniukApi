@@ -18,7 +18,7 @@ Meta.init({
   postId: {
     type: DataTypes.INTEGER,
   },
-  pageid: {
+  pageId: {
     type: DataTypes.INTEGER,
   },
 },{
