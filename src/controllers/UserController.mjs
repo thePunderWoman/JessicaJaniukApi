@@ -82,7 +82,7 @@ export class UserController {
       }
     }).then((user) => {
       if (user) {
-        user.updateAttributes({
+        user.update({
           firstName: request.body['firstName'],
           lastName: request.body['lastName'],
           email: request.body['email'],
@@ -109,7 +109,7 @@ export class UserController {
       }
     }).then((user) => {
       if (user) {
-        user.updateAttributes({
+        user.update({
           password: PasswordHelper.cryptPassword(request.body['password']),
         }).then((user) => {
           var data = {

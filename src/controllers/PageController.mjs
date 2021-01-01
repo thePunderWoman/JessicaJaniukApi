@@ -105,7 +105,7 @@ export class PageController {
       }
     }).then((page) => {
       if (page) {
-        page.updateAttributes({
+        page.update({
           title: request.body['title'],
           content: request.body['content'],
           key: request.body['key'],

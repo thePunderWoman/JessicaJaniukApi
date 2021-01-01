@@ -197,7 +197,7 @@ export class PostController {
       }
     }).then((post) => {
       if (post) {
-        post.updateAttributes({
+        post.update({
           title: request.body['title'],
           key: this.createKey(request.body['title']),
           content: request.body['content'],

@@ -81,7 +81,7 @@ export class ConnectionController {
       }
     }).then((connection) => {
       if (connection) {
-        connection.updateAttributes({
+        connection.update({
           name: request.body['name'],
           url: request.body['url'],
           linktext: request.body['linktext'],

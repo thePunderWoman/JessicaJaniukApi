@@ -80,7 +80,7 @@ export class TagController {
       }
     }).then((tag) => {
       if (tag) {
-        tag.updateAttributes({
+        tag.update({
           name: request.body['name'],
         }).then((tag) => {
           var data = {
