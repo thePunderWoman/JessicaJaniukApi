@@ -15,7 +15,7 @@ let categoryController = new CategoryController();
 let userController = new UserController();
 let authController = new AuthController();
 let connectionController = new ConnectionController();
-let algorithms = ['RS256'];
+let algorithms = ['HS256'];
 
 // post methods
 router.get('/post', postController.getAll);
