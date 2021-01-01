@@ -248,7 +248,7 @@ export class PostController {
   verifyRequiredParams(request) {
     request.assert('title', 'title field is required').notEmpty();
     request.assert('published', 'published field is required').notEmpty();
-    request.assert('publishDate', 'publish date field must be a date').isDate();
+    // request.assert('publishDate', 'publish date field must be a date').isDate();
     request.assert('categoryId', 'category is required').notEmpty();
 
     var errors = request.validationErrors();
